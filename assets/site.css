@@ -66,12 +66,13 @@ main.content{grid-column:2;min-width:0}
 
 /* ===== HERO ===== */
 .hero{padding:48px 64px 24px}
-.live-pill{display:inline-flex;align-items:center;gap:10px;border:var(--rule) solid var(--ink);padding:8px 16px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;box-shadow:4px 4px 0 0 var(--ink);background:var(--bg)}
+.live-pill{position:relative;display:inline-flex;align-items:center;gap:10px;border:var(--rule) solid var(--ink);padding:8px 16px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;box-shadow:4px 4px 0 0 var(--ink);background:var(--bg)}
+.live-pill::before{content:'';position:absolute;inset:-10px} /* расширенная зона наведения: контур и тень тоже «ловят» курсор */
 .live-pill .dot{width:10px;height:10px;background:var(--accent);animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(.6)}}
 .live-pill:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .live-pill:hover .dot{background:#fff}
-.hero h1{font-size:clamp(56px,13vw,168px);margin:24px 0 20px;letter-spacing:.01em}
+.hero h1{font-size:clamp(56px,13vw,168px);margin:24px 0 20px;letter-spacing:.01em;line-height:1.16} /* воздух под брев Й второй строки — не соприкасается с верхней */
 .hero h1[data-animate]{min-height:2.1em}
 .hero h1.h1-fit{font-size:clamp(64px,15vw,196px)} /* короткое слово-плакат (МЕДИА) — шкала мокапа */
 .hero h1 .strike{position:relative;white-space:nowrap}
@@ -82,7 +83,7 @@ main.content{grid-column:2;min-width:0}
 .hero h1.play .type{animation:type .8s steps(9) 1s forwards}
 @keyframes type{to{max-width:100%}}
 .hero h1 .caret{display:none}
-.hero h1.play .caret{display:inline-block;width:.06em;height:.82em;background:var(--ink);vertical-align:baseline;animation:caret 1s step-end 1s 3}
+.hero h1.play .caret{display:inline-block;width:.52em;height:.09em;margin-left:.08em;background:var(--ink);vertical-align:baseline;animation:caret 1s step-end 1s 3} /* горизонтальный курсор-подчёркивание, как в мокапе */
 @keyframes caret{50%{opacity:0}}
 .badges{display:flex;flex-wrap:wrap;gap:0;border:var(--rule) solid var(--ink);width:max-content;max-width:100%}
 .badges span{padding:8px 18px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;border-right:var(--rule) solid var(--ink)}
