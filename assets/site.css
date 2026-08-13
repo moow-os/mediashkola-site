@@ -4,24 +4,32 @@
    Riso-правило: ч/б слой + один прогон фуксии, фуксия = только интерактив
    ============================================================ */
 
-@font-face{font-family:'Stengazeta';src:url('fonts/Stengazeta-Regular.woff2') format('woff2');font-display:swap}
+/* Шрифтовой стек = утверждённый мокап Claude Design (решение Альберта 13.08):
+   заголовки Oswald 700, текст Arial/Helvetica, моно ui-monospace.
+   Каветка: брендбук называет Stengazeta/Gunterz — их woff2 лежат в fonts/,
+   вернуть = раскомментировать блок ниже и переключить --display/--text. */
+@font-face{font-family:'Oswald';src:url('fonts/Oswald-500-cyrillic.woff2') format('woff2');font-weight:500;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:'Oswald';src:url('fonts/Oswald-500-latin.woff2') format('woff2');font-weight:500;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F,U+20AC}
+@font-face{font-family:'Oswald';src:url('fonts/Oswald-700-cyrillic.woff2') format('woff2');font-weight:700;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:'Oswald';src:url('fonts/Oswald-700-latin.woff2') format('woff2');font-weight:700;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F,U+20AC}
+/* @font-face{font-family:'Stengazeta';src:url('fonts/Stengazeta-Regular.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'Gunterz';src:url('fonts/Gunterz-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
-@font-face{font-family:'Gunterz';src:url('fonts/Gunterz-MediumItalic.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:'Gunterz';src:url('fonts/Gunterz-MediumItalic.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap} */
 
 :root{
   --bg:#FDFDFD; --ink:#252525; --accent:#E13F8A;
-  --display:'Stengazeta', 'Arial Narrow', Impact, sans-serif;
-  --text:'Gunterz', 'Helvetica Neue', Arial, sans-serif;
+  --display:'Oswald', 'Arial Narrow', Arial, sans-serif;
+  --text:Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --mono:ui-monospace, 'SF Mono', Menlo, monospace;
   --rule:1.5px; --nav-h:64px;
 }
 *{margin:0;padding:0;box-sizing:border-box;border-radius:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--text);font-size:18px;line-height:1.5}
+body{background:var(--bg);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.5}
 button{font-family:inherit;color:inherit;background:none;border:none;cursor:pointer;font-size:inherit}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-h1,h2,h3{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.95}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-transform:uppercase;line-height:1}
 /* Буква никогда не перекрывает текст (ревизия 2) */
 h1,h2,h3{padding-bottom:.12em}
 h2{margin-bottom:.3em}
@@ -31,7 +39,7 @@ h2{margin-bottom:.3em}
 
 /* ===== NAVBAR (sticky) ===== */
 header.top{position:sticky;top:0;z-index:90;display:flex;align-items:center;gap:32px;padding:0 64px;height:var(--nav-h);border-bottom:var(--rule) solid var(--ink);background:var(--bg)}
-.wordmark{font-family:var(--display);font-size:28px;background:var(--accent);color:#fff;padding:6px 12px;text-decoration:none;line-height:1}
+.wordmark{font-weight:700;font-family:var(--display);font-size:28px;background:var(--accent);color:#fff;padding:6px 12px;text-decoration:none;line-height:1}
 .wordmark:hover{background:var(--ink)}
 nav.anchors{display:flex;gap:28px;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
 nav.anchors a{text-decoration:none;border-bottom:2px solid transparent;padding:4px 0}
@@ -63,9 +71,9 @@ main.content{grid-column:2;min-width:0}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(.6)}}
 .live-pill:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .live-pill:hover .dot{background:#fff}
-.hero h1{font-size:clamp(52px,12.5vw,190px);margin:24px 0 20px;letter-spacing:.01em}
+.hero h1{font-size:clamp(56px,13vw,168px);margin:24px 0 20px;letter-spacing:.01em}
 .hero h1[data-animate]{min-height:2.1em}
-.hero h1.h1-fit{font-size:clamp(72px,20vw,300px)} /* короткое слово-плакат (МЕДИА) — почти во всю ширину */
+.hero h1.h1-fit{font-size:clamp(64px,15vw,196px)} /* короткое слово-плакат (МЕДИА) — шкала мокапа */
 .hero h1 .strike{position:relative;white-space:nowrap}
 .hero h1 .strike::after{content:'';position:absolute;left:-2%;top:52%;height:.09em;background:var(--ink);width:0}
 .hero h1.play .strike::after{animation:strike .35s .5s forwards}
@@ -83,7 +91,7 @@ main.content{grid-column:2;min-width:0}
 /* ===== SECTIONS ===== */
 section.strip{padding:40px 64px;border-top:var(--rule) solid var(--ink)}
 .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(37,37,37,.55);margin-bottom:8px}
-.strip h2{font-size:clamp(34px,5.5vw,84px)}
+.strip h2{font-size:clamp(28px,4.6vw,56px)}
 
 /* ===== CALENDAR ===== */
 .cal-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px}
@@ -102,15 +110,15 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .grid th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;font-weight:500;border:var(--rule) solid var(--ink);padding:10px 8px;text-align:left}
 .grid td{border:var(--rule) solid var(--ink);vertical-align:top;height:118px;padding:0;position:relative}
 .grid td.out{background:repeating-linear-gradient(45deg,transparent 0 7px,rgba(37,37,37,.05) 7px 8px)}
-.daynum{font-family:var(--display);font-size:clamp(20px,2.2vw,34px);padding:8px 10px 0;display:block}
+.daynum{font-weight:700;font-family:var(--display);font-size:clamp(20px,2.2vw,34px);padding:8px 10px 0;display:block}
 .cellbtn{display:block;width:100%;height:100%;text-align:left;padding:0 0 8px}
 .cellbtn:hover .daynum,.cellbtn:focus-visible .daynum{color:var(--accent)}
 .start-tag{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;border:1px solid rgba(37,37,37,.4);color:rgba(37,37,37,.6);padding:2px 6px}
-.ev-tile{background:var(--accent);color:#fff;font-family:var(--display);font-size:18px;line-height:1.05;text-transform:uppercase;padding:8px 10px;margin:6px 8px 0;display:block}
+.ev-tile{background:var(--accent);color:#fff;font-family:var(--display);font-weight:700;font-size:20px;line-height:1.05;text-transform:uppercase;padding:8px 10px;margin:6px 8px 0;display:block}
 .cellbtn:hover .ev-tile{background:var(--ink)}
 .ls-row{font-size:11px;letter-spacing:0;text-transform:uppercase;padding:2px 8px 0;display:flex;gap:6px;white-space:nowrap;overflow:hidden}
 .ls-row .t{font-family:var(--mono);font-size:10.5px}
-.fin{font-family:var(--display);font-size:15px;text-transform:uppercase;padding:6px 10px 0;display:block}
+.fin{font-weight:700;font-family:var(--display);font-size:15px;text-transform:uppercase;padding:6px 10px 0;display:block}
 .fin::before{content:'★ '}
 .today-mark{position:absolute;top:8px;right:10px;display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
 .today-mark .dot{width:8px;height:8px;background:var(--accent);animation:pulse 1.6s infinite}
@@ -128,7 +136,7 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 @keyframes frameIn{to{opacity:1;transform:none}}
 .card .photo-label{position:absolute;left:14px;bottom:-1.6em;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#fff;bottom:6px;left:14px}
 .card .inner{padding:18px 20px 22px}
-.card h3{font-size:30px;margin-bottom:10px}
+.card h3{font-weight:700;font-size:30px;margin-bottom:10px}
 .meta{display:flex;border:var(--rule) solid var(--ink);width:max-content;max-width:100%;margin-bottom:12px;flex-wrap:wrap}
 .meta span{font-family:var(--mono);font-size:13px;padding:6px 12px;border-right:var(--rule) solid var(--ink);white-space:nowrap}
 .meta span:last-child{border-right:none}
@@ -136,7 +144,7 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .card ul.slots{list-style:none;margin:0 0 8px}
 .card ul.slots li{display:flex;gap:12px;font-size:14px;padding:5px 0;border-bottom:1px solid rgba(37,37,37,.18)}
 .card ul.slots li .t{font-family:var(--mono);font-size:13px;min-width:112px}
-.tape-cta{display:inline-block;background:var(--accent);color:#fff;font-family:var(--display);font-size:22px;text-transform:uppercase;text-decoration:none;padding:10px 26px;transform:rotate(-2deg);margin-top:12px;position:relative}
+.tape-cta{font-weight:700;display:inline-block;background:var(--accent);color:#fff;font-family:var(--display);font-size:22px;text-transform:uppercase;text-decoration:none;padding:10px 26px;transform:rotate(-2deg);margin-top:12px;position:relative}
 .tape-cta::before,.tape-cta::after{content:'';position:absolute;top:0;bottom:0;width:12px;background:inherit;opacity:.55}
 .tape-cta::before{left:-12px;clip-path:polygon(100% 0,0 18%,100% 38%,10% 55%,100% 74%,0 92%,100% 100%)}
 .tape-cta::after{right:-12px;clip-path:polygon(0 0,100% 14%,0 34%,90% 52%,0 70%,100% 88%,0 100%)}
@@ -149,7 +157,7 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .price{padding:22px 24px;border-right:var(--rule) solid var(--ink)}
 .price:last-child{border-right:none}
 .price .who{font-size:13px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px}
-.price .num{font-family:var(--display);font-size:clamp(34px,4.5vw,60px);display:block}
+.price .num{font-weight:700;font-family:var(--display);font-size:clamp(34px,4.5vw,60px);display:block}
 .price .slots{font-family:var(--mono);font-size:13px;display:block;margin:6px 0 10px;white-space:nowrap}
 .price p{font-size:15px;margin-bottom:14px}
 .btn-outline{display:inline-block;border:var(--rule) solid var(--ink);padding:10px 22px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
@@ -161,7 +169,7 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .trust .cell{padding:16px 20px;border-right:var(--rule) solid var(--ink)}
 .trust .cell:last-child{border-right:none}
 .trust .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(37,37,37,.55);display:block;margin-bottom:6px}
-.trust .val{font-family:var(--display);font-size:clamp(18px,1.8vw,26px);text-transform:uppercase;line-height:1.05}
+.trust .val{font-weight:700;font-family:var(--display);font-size:clamp(18px,1.8vw,26px);text-transform:uppercase;line-height:1.05}
 .trust a.val{text-decoration:none}
 .trust a.val:hover{color:var(--accent)}
 .nowrap{white-space:nowrap}
@@ -190,7 +198,7 @@ footer ul{list-style:none}
 .faq{max-width:980px}
 .faq details{border-bottom:var(--rule) solid var(--ink)}
 .faq details:first-child{border-top:var(--rule) solid var(--ink)}
-.faq summary{display:flex;gap:18px;align-items:baseline;padding:16px 4px;cursor:pointer;font-family:var(--display);font-size:clamp(18px,2vw,26px);text-transform:uppercase;list-style:none}
+.faq summary{font-weight:700;display:flex;gap:18px;align-items:baseline;padding:16px 4px;cursor:pointer;font-family:var(--display);font-size:clamp(18px,2vw,26px);text-transform:uppercase;list-style:none}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary .n{font-family:var(--mono);font-size:13px}
 .faq summary::after{content:'+';margin-left:auto;font-family:var(--mono)}
@@ -203,7 +211,7 @@ footer ul{list-style:none}
 .row{display:grid;grid-template-columns:120px 1fr 2fr;gap:16px;padding:14px 20px;border-bottom:var(--rule) solid var(--ink);align-items:baseline}
 .row:last-child{border-bottom:none}
 .row .t{font-family:var(--mono);font-size:14px;white-space:nowrap}
-.row .g{font-family:var(--display);font-size:clamp(18px,2vw,26px);text-transform:uppercase}
+.row .g{font-weight:700;font-family:var(--display);font-size:clamp(18px,2vw,26px);text-transform:uppercase}
 .row .d{font-size:15px}
 
 /* ===== ПЛАНШЕТ 768–1023 ===== */
