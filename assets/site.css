@@ -91,6 +91,8 @@ main.content{grid-column:2;min-width:0}
 
 /* ===== SECTIONS ===== */
 section.strip{padding:40px 64px;border-top:var(--rule) solid var(--ink)}
+/* якорный переход не должен прятать шапку секции под липкий навбар */
+section[id],.hero[id]{scroll-margin-top:calc(var(--nav-h) + 12px)}
 .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(37,37,37,.55);margin-bottom:8px}
 .strip h2{font-size:clamp(28px,4.6vw,56px)}
 
@@ -180,13 +182,65 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .review blockquote{font-size:17px;line-height:1.45;margin-bottom:12px}
 .review .who{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(37,37,37,.6)}
 
+/* ===== ЛИЦА МШ (команда) =====
+   Плёночный кадр: ч/б фото + ксерокс-зерно, чернильный скотч держит кадр.
+   Карточка не кликабельна → фуксии здесь нет. */
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:44px 38px;max-width:1200px}
+.team-2{grid-template-columns:repeat(2,1fr);max-width:660px}
+.tm{margin:0}
+/* плёночная рамка вокруг кадра (GRAFT из мокапа ревизии 4) — не занимает поток, поэтому зазор сетки увеличен */
+.tm-shot{position:relative;aspect-ratio:4/5;background:#2b2b2b;overflow:hidden;outline:var(--rule) solid var(--ink);outline-offset:9px}
+.tm-shot img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.06)}
+/* ксерокс-зерно — только внутри фотографии, фон остаётся стерильным */
+.tm-shot::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.3;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.55'/></svg>")}
+/* скотч, который держит кадр */
+.tm-shot::before{content:'';position:absolute;z-index:2;top:-9px;left:14px;width:74px;height:22px;background:rgba(37,37,37,.82);transform:rotate(-6deg)}
+.tm-name{position:absolute;z-index:3;left:0;right:0;bottom:0;background:var(--ink);color:#fff;font-family:var(--display);font-weight:700;font-size:19px;line-height:1.15;text-transform:uppercase;padding:9px 12px}
+.tm-role{font-size:13px;line-height:1.35;text-transform:uppercase;letter-spacing:.06em;padding:10px 2px 0;color:rgba(37,37,37,.78)}
+/* ракорд вместо ещё не снятого портрета */
+.tm-soon{display:flex;align-items:center;justify-content:center}
+.tm-soon .tm-cross{position:absolute;top:50%;left:50%;width:78px;height:78px;transform:translate(-50%,-58%);
+  background:linear-gradient(#8d8d8d,#8d8d8d) center/1.5px 100% no-repeat,linear-gradient(#8d8d8d,#8d8d8d) center/100% 1.5px no-repeat;
+  border:1.5px solid #8d8d8d;border-radius:50%}
+.tm-soon .tm-tag{position:absolute;top:16px;left:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#c9c9c9;border:1px solid rgba(255,255,255,.35);padding:3px 7px}
+
 /* ===== ЗАПИСЬ ===== */
 .cta-final{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;margin-bottom:32px}
 .cta-final h2{font-size:clamp(32px,5vw,72px);margin:0}
-.lead-stub{border:var(--rule) dashed var(--ink);padding:26px;max-width:980px;font-size:15px}
-.lead-stub .contacts{display:flex;gap:24px;flex-wrap:wrap;margin-top:12px;font-family:var(--mono);font-size:14px}
-.lead-stub a{white-space:nowrap}
-.lead-stub a:hover{color:var(--accent)}
+.lead{border:var(--rule) solid var(--ink);padding:28px;max-width:980px}
+.lead-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.field label{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.field input{width:100%;font-family:var(--text);font-size:17px;padding:12px 14px;min-height:48px;background:var(--bg);color:var(--ink);border:var(--rule) solid var(--ink)}
+/* телефон моноширинным — язык таймкодов школы + меньше ошибок ввода (GRAFT из мокапа) */
+.field input[type=tel]{font-family:var(--mono);font-size:17px}
+.hint{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:rgba(37,37,37,.6);margin-top:8px}
+.field input::placeholder{color:rgba(37,37,37,.38)}
+.field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 1.5px var(--accent)}
+.field input[aria-invalid="true"]{border-style:dashed}
+.err{font-size:13px;margin-top:6px;padding-left:14px;position:relative}
+.err::before{content:'!';position:absolute;left:0;font-family:var(--mono);font-weight:700}
+.chips{border:none;margin-top:22px}
+.chips legend{font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;padding:0}
+.chip-row{display:flex;flex-wrap:wrap;gap:0;border:var(--rule) solid var(--ink);width:max-content;max-width:100%}
+.chip{position:relative;border-right:var(--rule) solid var(--ink)}
+.chip:last-child{border-right:none}
+.chip input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
+.chip span{display:block;font-family:var(--display);font-weight:700;font-size:19px;text-transform:uppercase;padding:11px 20px;min-height:48px;line-height:26px}
+.chip:hover span{color:var(--accent)}
+/* выбранная плашка кликабельна и активна → фуксия законна */
+.chip input:checked + span{background:var(--accent);color:#fff}
+.chip input:focus-visible + span{outline:3px solid var(--accent);outline-offset:2px}
+.consent{display:flex;gap:12px;align-items:flex-start;margin-top:24px;max-width:640px;font-size:15px;cursor:pointer}
+.consent input{width:22px;height:22px;margin-top:2px;flex:none;accent-color:var(--accent)}
+.lead button[type=submit]{margin-top:26px;border:none;font-family:var(--display)}
+.lead-note{font-size:13px;color:rgba(37,37,37,.62);margin-top:16px;max-width:640px}
+.lead-done{border:var(--rule) solid var(--ink);box-shadow:8px 8px 0 0 var(--ink);padding:28px;max-width:980px}
+.lead-done h3{font-size:clamp(26px,3.4vw,40px);margin-bottom:14px}
+.done-sum{font-family:var(--mono);font-size:14px;line-height:1.7;white-space:pre-wrap;border-left:var(--rule) solid var(--ink);padding:4px 0 4px 16px;margin-bottom:22px}
+.done-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.done-actions .tape-cta{margin-top:0}
+.done-actions .btn-outline{min-height:48px;display:inline-flex;align-items:center}
 
 /* ===== FOOTER ===== */
 footer{padding:28px 64px;border-top:var(--rule) solid var(--ink);display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px}
@@ -227,9 +281,16 @@ footer ul{list-style:none}
   .efir a.active .lbl-t{opacity:1}
   .efir a::after{display:none}
   .efir a .n{font-size:12px;padding:4px 0}
-  header.top{padding:0 32px}
+  /* 5 пунктов навигации на планшете не помещались и рвали шапку на две строки */
+  header.top{padding:0 32px;gap:20px}
+  nav.anchors{gap:16px;font-size:12px;white-space:nowrap}
+  .nav-cta{padding:10px 16px;font-size:12px;white-space:nowrap}
   .hero,section.strip{padding-left:32px;padding-right:32px}
   footer{padding:28px 32px;grid-template-columns:1fr 1fr}
+  .team{grid-template-columns:repeat(3,1fr);gap:26px 20px}
+}
+@media (max-width:900px){
+  .team{grid-template-columns:repeat(2,1fr)}
 }
 /* ===== ТЕЛЕФОН <768 ===== */
 @media (max-width:767px){
@@ -258,13 +319,32 @@ footer ul{list-style:none}
   .prices,.reviews{grid-template-columns:1fr}
   .price,.review{border-right:none;border-bottom:var(--rule) solid var(--ink)}
   .price:last-child,.review:last-child{border-bottom:none}
-  .trust{grid-template-columns:1fr 1fr}
+  /* minmax(0,…): без него неразрывное «Кубань 24» распирало страницу вправо на 390 */
+  .trust{grid-template-columns:repeat(2,minmax(0,1fr))}
   .trust .cell{border-bottom:var(--rule) solid var(--ink)}
   .trust .cell:nth-child(2n){border-right:none}
   .trust .cell:nth-child(n+3){border-bottom:none}
   footer{padding:20px;grid-template-columns:1fr}
   .row{grid-template-columns:1fr;gap:4px}
   .price .slots{white-space:normal}
+  /* лента лиц: 1.5 карточки в кадре — видно, что она листается */
+  /* поля ленты — маржинами крайних карточек: padding скроллера съедается снап-скроллом,
+     а рамке кадра (outline-offset) нужен воздух, иначе её срезает */
+  .team{display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:12px 0 16px;scroll-padding-left:20px;-webkit-overflow-scrolling:touch}
+  .tm{flex:0 0 62%;scroll-snap-align:start}
+  .tm:first-child{margin-left:20px}
+  .tm:last-child{margin-right:20px}
+  .tm-name{font-size:17px;padding:8px 10px}
+  .lead,.lead-done{padding:20px}
+  .lead-grid{grid-template-columns:1fr;gap:16px}
+  /* столбец, а не перенос: иначе соседние плашки теряют разделитель и читаются как одно поле */
+  .chip-row{width:100%;flex-direction:column;flex-wrap:nowrap}
+  .chip{flex:1 1 auto;border-right:none;border-bottom:var(--rule) solid var(--ink)}
+  .chip:last-child{border-bottom:none}
+  .chip span{text-align:center}
+  .lead button[type=submit]{width:100%;text-align:center}
+  .done-actions{flex-direction:column;align-items:stretch}
+  .done-actions .tape-cta,.done-actions .btn-outline{text-align:center;justify-content:center}
 }
 
 /* ===== REDUCED MOTION ===== */

@@ -155,4 +155,107 @@
   if (fEv) fEv.addEventListener('click', function () { showEv = !showEv; fEv.setAttribute('aria-pressed', String(showEv)); render(); });
   if (fLs) fLs.addEventListener('click', function () { showLs = !showLs; fLs.setAttribute('aria-pressed', String(showLs)); render(); });
   render();
+
+  /* ===== ФОРМА ЗАПИСИ =====
+     Поля утверждены Катей 13.08 (team.json → lead_form), других полей нет.
+     Транспорт заявок не выбран (U1) → форма ничего не отправляет молча:
+     собирает заявку, кладёт в localStorage и отдаёт родителю одним касанием.
+     Подключение транспорта = замена ОДНОЙ функции sendLead(). */
+  var form = document.getElementById('lead');
+  if (form) {
+    var done = document.getElementById('lead-done');
+    var TG = 'mediashkola_krd';
+
+    function err(id, on, msg) {
+      var p = document.getElementById('e-' + id);
+      if (!p) return;
+      if (msg) p.textContent = msg;
+      p.hidden = !on;
+      var f = form.elements[id === 'parent' ? 'parent_name' : id];
+      if (f && f.setAttribute && f.type !== 'radio') f.setAttribute('aria-invalid', String(on));
+    }
+    function digits(s) { return (s || '').replace(/\D/g, ''); }
+    function val(name) {
+      var f = form.elements[name];
+      if (!f) return '';
+      if (f.length && !f.value && f[0] && f[0].type === 'radio') {
+        for (var i = 0; i < f.length; i++) if (f[i].checked) return f[i].value;
+        return '';
+      }
+      return (f.value || '').trim();
+    }
+    function check() {
+      var ok = true;
+      var name = val('parent_name');
+      if (name.length < 2) { err('parent', true); ok = false; } else err('parent', false);
+      var ph = digits(val('phone'));
+      var phOk = ph.length === 11 && (ph[0] === '7' || ph[0] === '8');
+      if (!phOk) { err('phone', true); ok = false; } else err('phone', false);
+      if (!val('course')) { err('course', true); ok = false; } else err('course', false);
+      if (!val('messenger')) { err('messenger', true); ok = false; } else err('messenger', false);
+      var agree = document.getElementById('f-agree');
+      if (!agree.checked) { err('agree', true); ok = false; } else err('agree', false);
+      return ok;
+    }
+    function leadText(lead) {
+      return 'ЗАЯВКА НА КОНСУЛЬТАЦИЮ · МЕДИАШКОЛА\n'
+        + 'Родитель: ' + lead.parent_name + '\n'
+        + 'Телефон: ' + lead.phone + '\n'
+        + 'Курс: ' + lead.course + '\n'
+        + 'Мессенджер: ' + lead.messenger;
+    }
+    /* ЕДИНСТВЕННАЯ точка подключения транспорта.
+       Сейчас: сохранить локально + отдать текст родителю (ручная отправка).
+       Потом: fetch('<endpoint>', {method:'POST', body: JSON.stringify(lead)}). */
+    function sendLead(lead) {
+      try {
+        var box = JSON.parse(localStorage.getItem('msh_leads') || '[]');
+        box.push(lead);
+        localStorage.setItem('msh_leads', JSON.stringify(box));
+      } catch (e) { /* приватный режим — заявка всё равно на экране */ }
+      if (window.console) console.info('[МШ] заявка собрана', lead);
+      return { mode: 'manual' };
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!check()) {
+        var bad = form.querySelector('[aria-invalid="true"]');
+        if (!bad) {
+          var open = form.querySelector('.err:not([hidden])');
+          if (open) bad = open.closest('fieldset') ? open.closest('fieldset').querySelector('input') : document.getElementById('f-agree');
+        }
+        if (bad && bad.focus) bad.focus();
+        return;
+      }
+      var lead = {
+        parent_name: val('parent_name'),
+        phone: val('phone'),
+        course: val('course'),
+        messenger: val('messenger'),
+        at: new Date().toISOString()
+      };
+      sendLead(lead);
+      var text = leadText(lead);
+      document.getElementById('done-sum').textContent = text;
+      document.getElementById('done-tg').href = 'https://t.me/' + TG + '?text=' + encodeURIComponent(text);
+      form.hidden = true;
+      done.hidden = false;
+      done.focus();
+    });
+
+    /* чипы: снимаем ошибку сразу после выбора */
+    form.addEventListener('change', function (e) {
+      var n = e.target.name;
+      if (n === 'course' || n === 'messenger') err(n, false);
+      if (e.target.id === 'f-agree' && e.target.checked) err('agree', false);
+    });
+
+    var back = document.getElementById('done-back');
+    if (back) back.addEventListener('click', function () {
+      done.hidden = true; form.hidden = false;
+      var first = document.getElementById('f-parent');
+      if (first) first.focus();
+    });
+  }
 })();
