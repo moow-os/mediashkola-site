@@ -1,0 +1,5 @@
+[2026-08-13T01:40:59.687Z] GET http://localhost:8138/index.html → 200 (10ms, 13171B)
+[2026-08-13T01:40:59.710Z] GET http://localhost:8138/assets/site.css → 200 (5ms, 18268B)
+[2026-08-13T01:40:59.710Z] GET http://localhost:8138/assets/site.js → 200 (6ms, 8725B)
+[2026-08-13T01:40:59.768Z] GET http://localhost:8138/assets/fonts/Gunterz-Medium.woff2 → 200 (12ms, 20760B)
+[2026-08-13T01:40:59.769Z] GET http://localhost:8138/assets/fonts/Stengazeta-Regular.woff2 → 200 (11ms, 43956B)
