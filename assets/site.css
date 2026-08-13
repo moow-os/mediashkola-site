@@ -63,8 +63,9 @@ main.content{grid-column:2;min-width:0}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(.6)}}
 .live-pill:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .live-pill:hover .dot{background:#fff}
-.hero h1{font-size:clamp(44px,8vw,128px);margin:28px 0 20px;letter-spacing:.01em}
+.hero h1{font-size:clamp(52px,12.5vw,190px);margin:24px 0 20px;letter-spacing:.01em}
 .hero h1[data-animate]{min-height:2.1em}
+.hero h1.h1-fit{font-size:clamp(72px,20vw,300px)} /* короткое слово-плакат (МЕДИА) — почти во всю ширину */
 .hero h1 .strike{position:relative;white-space:nowrap}
 .hero h1 .strike::after{content:'';position:absolute;left:-2%;top:52%;height:.09em;background:var(--ink);width:0}
 .hero h1.play .strike::after{animation:strike .35s .5s forwards}
@@ -82,7 +83,7 @@ main.content{grid-column:2;min-width:0}
 /* ===== SECTIONS ===== */
 section.strip{padding:40px 64px;border-top:var(--rule) solid var(--ink)}
 .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(37,37,37,.55);margin-bottom:8px}
-.strip h2{font-size:clamp(28px,4vw,56px)}
+.strip h2{font-size:clamp(34px,5.5vw,84px)}
 
 /* ===== CALENDAR ===== */
 .cal-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px}
