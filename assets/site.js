@@ -159,6 +159,27 @@
   if (fLs) fLs.addEventListener('click', function () { showLs = !showLs; fLs.setAttribute('aria-pressed', String(showLs)); render(); });
   render();
 
+  /* ===== ЛЕНТА ОТЗЫВОВ =====
+     Дублируем набор карточек кодом, а не в разметке: копия физически нужна, чтобы
+     дорожка сходилась сама с собой на -50% и шва не было видно, но держать её руками
+     значит рано или поздно разъехаться с оригиналом. Копия помечается aria-hidden.
+     Скорость держим постоянной (~27px/с) независимо от числа карточек. */
+  (function () {
+    var track = document.querySelector('.rev-track');
+    if (!track || track.querySelector('.rev-copy')) return;
+    var copy = document.createElement('div');
+    copy.className = 'rev-copy';
+    copy.setAttribute('aria-hidden', 'true');
+    Array.prototype.forEach.call(track.children, function (card) {
+      copy.appendChild(card.cloneNode(true));
+    });
+    track.appendChild(copy);
+    if (!REDUCED) {
+      var half = track.scrollWidth / 2;
+      track.style.animationDuration = Math.round(half / 27) + 's';
+    }
+  })();
+
   /* ===== ФОРМА ЗАПИСИ =====
      Поля утверждены Катей 13.08 (team.json → lead_form), других полей нет.
      Транспорт заявок не выбран (U1) → форма ничего не отправляет молча:

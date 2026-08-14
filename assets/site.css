@@ -202,7 +202,10 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .rev-copy{display:flex;align-items:stretch}
 .rev-marquee:hover .rev-track,.rev-marquee:focus-within .rev-track{animation-play-state:paused}
 @keyframes revscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.rev-track .review{flex:0 0 clamp(280px,24vw,360px);padding:22px 24px;border-right:var(--rule) solid var(--ink);border-bottom:none}
+/* подпись прижата к низу: у карточек общая высота, и без этого имена авторов
+   висели на разной высоте — полоса рассыпалась вместо ровной линии слугов */
+.rev-track .review{flex:0 0 clamp(280px,24vw,360px);padding:22px 24px;border-right:var(--rule) solid var(--ink);border-bottom:none;display:flex;flex-direction:column}
+.rev-track .review .who{margin-top:auto}
 .rev-track .review blockquote{font-size:17px;line-height:1.45;margin-bottom:12px}
 .reviews{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--rule) solid var(--ink);max-width:1200px;margin-top:28px}
 .review{padding:22px 24px;border-right:var(--rule) solid var(--ink)}
