@@ -60,7 +60,9 @@
   var lessons = {}; CAL.weekly_lessons.dates.forEach(function (d) { lessons[d] = true; });
   var events = {}; CAL.saturday_events.forEach(function (e) { events[e.date] = e; });
   var finals = {}; CAL.month_finals.forEach(function (f) { finals[f.date] = f; });
-  var curMonth = 9, showEv = true, showLs = true;
+  /* съёмочные дни ТВ-проекта — правка Кати 14.08: идут по будням, наравне с событиями */
+  var shoots = {}; (CAL.tv_shoots || []).forEach(function (t) { shoots[t.date] = t; });
+  var curMonth = 9, showEv = true, showLs = true, showTv = true;
 
   function dstr(y, m, d) { return y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0'); }
   var n = new Date();
@@ -71,13 +73,19 @@
       s.course.replace('УСПЕШНЫЙ ОРАТОР', 'ОРАТОР') + ' · ' + s.age.replace('–', NB) + '</span>';
   }
   function cellContent(ds) {
-    var p = [], ev = events[ds], fin = finals[ds];
-    if (ev && showEv) p.push('<span class="ev-tile">' + ev.title + '</span>');
+    var p = [], ev = events[ds], fin = finals[ds], tv = shoots[ds];
+    /* время видно прямо в ячейке — правка Кати: «здесь будет везде время» */
+    if (ev && showEv) p.push('<span class="ev-tile">' + ev.title + '</span>' +
+      (ev.time ? '<span class="ev-t">' + ev.time + '</span>' : ''));
+    if (tv && showTv) p.push('<span class="tv-tile">СЪЁМКИ ТВ' +
+      (tv.time ? '<span class="ev-t">' + tv.time + '</span>' : '') + '</span>');
     if (fin) p.push('<span class="fin">ФИНАЛ: ' + fin.media + '</span>');
-    if (lessons[ds] && showLs) CAL.weekly_lessons.slots.forEach(function (s) { p.push(slotShort(s)); });
+    /* финал идёт целый день, поэтому часы групп под ним не показываем (правка Кати) */
+    var hideSlots = fin && CAL.finals_full_day;
+    if (lessons[ds] && showLs && !hideSlots) CAL.weekly_lessons.slots.forEach(function (s) { p.push(slotShort(s)); });
     return p.join('');
   }
-  function hasContent(ds) { return (events[ds] && showEv) || finals[ds] || (lessons[ds] && showLs); }
+  function hasContent(ds) { return (events[ds] && showEv) || (shoots[ds] && showTv) || finals[ds] || (lessons[ds] && showLs); }
 
   function render() {
     document.getElementById('cal-title').textContent = MONTH_NAMES[curMonth] + ' 2026';
@@ -125,16 +133,19 @@
   var ovl = document.getElementById('ovl'), lastFocus = null;
   function openCard(ds, origin) {
     lastFocus = origin || document.activeElement;
-    var ev = events[ds], fin = finals[ds], ls = lessons[ds];
+    var ev = events[ds], fin = finals[ds], ls = lessons[ds], tv = shoots[ds];
     var d = new Date(ds + 'T12:00:00');
-    document.getElementById('card-title').textContent = ev ? ev.title : (fin ? 'ФИНАЛ: ' + fin.media : 'ЗАНЯТИЯ');
+    document.getElementById('card-title').textContent = ev ? ev.title : (tv ? tv.title : (fin ? 'ФИНАЛ: ' + fin.media : 'ЗАНЯТИЯ'));
     var meta = [d.getDate() + '.' + String(d.getMonth() + 1).padStart(2, '0') + ' · ' + WD[d.getDay()]];
     if (ev) meta.push(ev.time || 'время уточняется');
+    if (tv) meta.push(tv.time);
+    if (fin && CAL.finals_full_day) meta.push('весь день');
     document.getElementById('card-meta').innerHTML = meta.map(function (m) { return '<span>' + m + '</span>'; }).join('');
     var body = '';
     if (ev) body += '<p class="desc">' + ev.desc + '</p>';
+    if (tv) body += '<p class="desc">' + tv.desc + '</p>';
     if (fin) body += '<p class="desc">★ МЕДИА: ' + fin.media + ' · ОРАТОР: ' + fin.orator + '</p>';
-    if (ls) body += '<ul class="slots">' + CAL.weekly_lessons.slots.map(function (s) {
+    if (ls && !(fin && CAL.finals_full_day)) body += '<ul class="slots">' + CAL.weekly_lessons.slots.map(function (s) {
       return '<li><span class="t">' + s.time + '</span><span>' + s.course + ' · ' + s.group + ' · ' + s.age.replace('–', NB) + '</span></li>';
     }).join('') + '</ul>';
     document.getElementById('card-body').innerHTML = body;
@@ -154,9 +165,10 @@
   document.querySelectorAll('.months button').forEach(function (b) {
     b.addEventListener('click', function () { curMonth = +b.dataset.m; render(); });
   });
-  var fEv = document.getElementById('f-ev'), fLs = document.getElementById('f-ls');
+  var fEv = document.getElementById('f-ev'), fLs = document.getElementById('f-ls'), fTv = document.getElementById('f-tv');
   if (fEv) fEv.addEventListener('click', function () { showEv = !showEv; fEv.setAttribute('aria-pressed', String(showEv)); render(); });
   if (fLs) fLs.addEventListener('click', function () { showLs = !showLs; fLs.setAttribute('aria-pressed', String(showLs)); render(); });
+  if (fTv) fTv.addEventListener('click', function () { showTv = !showTv; fTv.setAttribute('aria-pressed', String(showTv)); render(); });
   render();
 
   /* ===== ЛЕНТА ОТЗЫВОВ =====
