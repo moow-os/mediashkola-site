@@ -90,6 +90,9 @@ main.content{grid-column:2;min-width:0}
 .hero h1 .caret{display:none}
 .hero h1.play .caret{display:inline-block;width:.52em;height:.09em;margin-left:.08em;background:var(--ink);vertical-align:baseline;animation:caret 1s step-end 1s 3} /* горизонтальный курсор-подчёркивание, как в мокапе */
 @keyframes caret{50%{opacity:0}}
+/* первый экран обязан назвать предмет, а не только настроение: слоган — про мотив,
+   эта строка — про то, что это за школа и чему учит (аудит design-review 14.08) */
+.hero-sub{font-size:20px;line-height:1.45;max-width:680px;margin:0 0 24px}
 .badges{display:flex;flex-wrap:wrap;gap:0;border:var(--rule) solid var(--ink);width:max-content;max-width:100%}
 .badges span{padding:8px 18px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;border-right:var(--rule) solid var(--ink)}
 .badges span:last-child{border-right:none}
