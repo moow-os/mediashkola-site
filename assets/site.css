@@ -318,6 +318,16 @@ footer ul{list-style:none}
   header.top{padding:0 20px;gap:16px}
   nav.anchors,.nav-cta{display:none}
   .menu-btn{display:block}
+  /* палец, а не курсор: всё нажимаемое на телефоне держит 44px по высоте
+     (замер design-review 14.08: было 27–43px на восьми элементах) */
+  .menu-btn,.months button,.legend button,.live-pill,.btn-outline,.wordmark{min-height:44px;display:inline-flex;align-items:center}
+  .months button,.legend button{justify-content:center}
+  .live-pill{gap:12px}
+  .trust a.val{min-height:44px;display:inline-flex;align-items:center}
+  nav.anchors.open a{min-height:44px;display:flex;align-items:center}
+  footer li a{min-height:44px;display:inline-flex;align-items:center}
+  .consent{min-height:44px;align-items:center}
+  .consent input{width:24px;height:24px;margin-top:0}
   nav.anchors.open{display:flex;position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;background:var(--bg);border-bottom:var(--rule) solid var(--ink);padding:16px 20px;gap:14px}
   .hero{padding:28px 20px 16px}
   .hero h1{min-height:auto}
