@@ -84,10 +84,20 @@
     if (t.length > 13 && t.indexOf(' ') > 0) return hyphenBreak(t.replace(/\s(?=\S+$)/, '<br>'));
     return hyphenBreak(t);
   }
-  function cellContent(ds) {
+  /* Катя сама даёт короткое имя в скобках: «Онлайн-Лаборатория Катеевой (ОЛК)».
+     В квадратике сетки показываем её сокращение — её же требование к календарю
+     дословно: «не помещается в квадратик и не читается». Полное имя никуда не
+     девается: оно в карточке по клику и в телефонном списке, где ширины хватает.
+     Правило общее — короткую плашку получит любое будущее событие со скобочной
+     аббревиатурой, никаких имён в коде не зашито. */
+  function tileName(t) {
+    var m = /^(.*?)\s*\(([^()]{2,12})\)\s*$/.exec(t);
+    return (m && m[2].length < m[1].length) ? m[2] : t;
+  }
+  function cellContent(ds, tight) {
     var p = [], ev = events[ds], fin = finals[ds], tv = shoots[ds];
     /* время видно прямо в ячейке — правка Кати: «здесь будет везде время» */
-    if (ev && showEv) p.push('<span class="ev-tile">' + tileTitle(ev.title) + '</span>' +
+    if (ev && showEv) p.push('<span class="ev-tile">' + tileTitle(tight ? tileName(ev.title) : ev.title) + '</span>' +
       (ev.time ? '<span class="ev-t">' + ev.time + '</span>' : ''));
     if (tv && showTv) p.push('<span class="tv-tile">СЪЁМКА<br>ТВ' +
       (tv.time ? '<span class="ev-t">' + tv.time + '</span>' : '') + '</span>');
@@ -115,7 +125,9 @@
       td = document.createElement('td');
       var startTag = (ds === CAL.season_start) ? '<span class="start-tag">СТАРТ</span>' : '';
       var today = (ds === todayStr) ? '<span class="today-mark"><span class="dot"></span>СЕГОДНЯ</span>' : '';
-      var inner = '<span class="daynum">' + d + '</span>' + cellContent(ds) + startTag + today;
+      /* tight=true: это квадратик сетки, тут имя короткое. Ниже, в списке по дням,
+         тот же cellContent зовётся без флага — там плашка во всю ширину. */
+      var inner = '<span class="daynum">' + d + '</span>' + cellContent(ds, true) + startTag + today;
       if (hasContent(ds)) {
         td.innerHTML = '<button class="cellbtn" data-d="' + ds + '" aria-haspopup="dialog">' + inner + '</button>';
       } else { td.innerHTML = inner; }
