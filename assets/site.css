@@ -86,7 +86,7 @@ main.content{grid-column:2;min-width:0}
 .hero h1.play .strike::after{animation:strike .35s .5s forwards}
 @keyframes strike{to{width:104%}}
 .hero h1 .type{display:inline-block;overflow-x:clip;overflow-y:visible;white-space:nowrap;vertical-align:bottom;max-width:0}
-.hero h1.play .type{animation:type .8s steps(9) 1s forwards}
+.hero h1.play .type{animation:type .9s steps(11) 1s forwards}
 @keyframes type{to{max-width:100%}}
 .hero h1 .caret{display:none}
 .hero h1.play .caret{display:inline-block;width:.52em;height:.09em;margin-left:.08em;background:var(--ink);vertical-align:baseline;animation:caret 1s step-end 1s 3 forwards} /* горизонтальный курсор-подчёркивание, как в мокапе */
@@ -425,6 +425,9 @@ footer ul{list-style:none}
   nav.anchors.open .nav-cta-mob{display:flex;justify-content:center;background:var(--accent);color:#fff;font-family:var(--display);font-weight:700;font-size:19px;padding:12px 20px;border-bottom:none;margin-top:4px}
   .hero{padding:28px 20px 16px}
   .hero h1{min-height:auto}
+  /* курсор не влезает в строку слогана и уезжал на третью строку один — на телефоне
+     он лишний: механику допечатки видно и без него */
+  .hero h1.play .caret{display:none}
   section.strip{padding:28px 20px}
   .badges{display:grid;grid-template-columns:1fr 1fr;width:100%}
   .badges span{border:none;outline:.75px solid var(--ink)}
