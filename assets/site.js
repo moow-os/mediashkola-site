@@ -102,10 +102,13 @@
       row.appendChild(td);
       if (row.children.length === 7) { tb.appendChild(row); row = document.createElement('tr'); }
       if (hasContent(ds)) {
+        /* Вся карточка дня — одна кнопка: на телефоне плашка события выглядит так же,
+           как на десктопе, и обязана так же открывать карточку (было: кликабельна
+           только шапка с числом — фуксия без интерактива, riso-нарушение). */
         var day = document.createElement('div'); day.className = 'day';
-        day.innerHTML = '<button class="head cellbtn" data-d="' + ds + '" aria-haspopup="dialog">' +
-          '<span class="daynum">' + d + '</span><span class="wd">' + WD[new Date(y, curMonth - 1, d).getDay()] + '</span></button>' +
-          '<div class="body">' + cellContent(ds) + '</div>';
+        day.innerHTML = '<button class="cellbtn daybtn" data-d="' + ds + '" aria-haspopup="dialog">' +
+          '<span class="head"><span class="daynum">' + d + '</span><span class="wd">' + WD[new Date(y, curMonth - 1, d).getDay()] + '</span></span>' +
+          '<span class="body">' + cellContent(ds) + '</span></button>';
         ag.appendChild(day);
       }
     }
