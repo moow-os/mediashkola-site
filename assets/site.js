@@ -74,10 +74,15 @@
   }
   /* GRAFT ревизии 5: длинные названия ломаем САМИ по точке/пробелу, а не отдаём браузеру —
      overflow-wrap рвал слова в середине. «СКЛЕЙКА.СВОП» → «СКЛЕЙКА. / СВОП». */
+  /* Дефис — третье место разрыва. Правило ниже вставляло РОВНО один перенос, перед
+     последним словом, поэтому «ОНЛАЙН-ЛАБОРАТОРИЯ КАТЕЕВОЙ (ОЛК)» держал первой
+     строкой 28 знаков = 125px в плашке шириной 79px (замер на 768, октябрь).
+     Ломаем после дефиса, когда обе половины длинные: «ОНЛАЙН-/ ЛАБОРАТОРИЯ». */
+  function hyphenBreak(t) { return t.replace(/(\S{5,})-(?=\S{5,})/g, '$1-<br>'); }
   function tileTitle(t) {
-    if (t.indexOf('.') > 0 && t.length > 11) return t.replace(/\.\s*/, '.<br>');
-    if (t.length > 13 && t.indexOf(' ') > 0) return t.replace(/\s(?=\S+$)/, '<br>');
-    return t;
+    if (t.indexOf('.') > 0 && t.length > 11) return hyphenBreak(t.replace(/\.\s*/, '.<br>'));
+    if (t.length > 13 && t.indexOf(' ') > 0) return hyphenBreak(t.replace(/\s(?=\S+$)/, '<br>'));
+    return hyphenBreak(t);
   }
   function cellContent(ds) {
     var p = [], ev = events[ds], fin = finals[ds], tv = shoots[ds];
