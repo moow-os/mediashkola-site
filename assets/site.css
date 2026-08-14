@@ -145,13 +145,14 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .ovl{position:fixed;inset:0;background:rgba(37,37,37,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:150}
 .ovl.open{display:flex}
 .card{background:var(--bg);border:var(--rule) solid var(--ink);box-shadow:8px 8px 0 0 var(--ink);max-width:460px;width:100%;position:relative;max-height:92vh;overflow:auto}
-.card .photo{height:180px;background:#2b2b2b;display:flex;align-items:flex-end;gap:10px;padding:14px;position:relative}
-.card .photo .frame{flex:1;height:96px;background:repeating-linear-gradient(90deg,#c9c9c9 0 6px,#a8a8a8 6px 12px);filter:grayscale(1) contrast(1.25);opacity:0;transform:translateY(8px)}
-.ovl.open .photo .frame{animation:frameIn .3s forwards}
-.ovl.open .photo .frame:nth-child(2){animation-delay:.15s}
-.ovl.open .photo .frame:nth-child(3){animation-delay:.3s}
-@keyframes frameIn{to{opacity:1;transform:none}}
-.card .photo-label{position:absolute;left:14px;bottom:-1.6em;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#fff;bottom:6px;left:14px}
+/* Место под фото до съёмки 16.08 — ракорд, а не полосатая заглушка: серые полосы
+   читались как битая картинка, а белая подпись поверх них давала ~1.4:1
+   (аудит design-review, второй проход 14.08). Язык тот же, что у карточки педагога. */
+.card .photo{height:150px;background:#2b2b2b;position:relative;display:block}
+.card .photo .frame{display:none}
+.card .photo::after{content:'';position:absolute;top:50%;left:50%;width:62px;height:62px;transform:translate(-50%,-50%);border:var(--rule) solid #8d8d8d;border-radius:50%;
+  background:linear-gradient(#8d8d8d,#8d8d8d) center/1.5px 100% no-repeat,linear-gradient(#8d8d8d,#8d8d8d) center/100% 1.5px no-repeat}
+.card .photo-label{position:absolute;top:14px;left:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c9c9c9;border:1px solid rgba(255,255,255,.32);padding:3px 7px}
 .card .inner{padding:18px 20px 22px}
 .card h3{font-weight:700;font-size:30px;margin-bottom:10px}
 .meta{display:flex;border:var(--rule) solid var(--ink);width:max-content;max-width:100%;margin-bottom:12px;flex-wrap:wrap}
@@ -252,6 +253,9 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .lead button[type=submit]{margin-top:26px;border:none;font-family:var(--display)}
 .lead-note{font-size:13px;color:rgba(37,37,37,.62);margin-top:16px;max-width:640px}
 .lead-done{border:var(--rule) solid var(--ink);box-shadow:8px 8px 0 0 var(--ink);padding:28px;max-width:980px}
+/* фокус переводим программно для скринридера, но кольцо не рисуем: пользователь
+   сюда не переходил табом, а 3px фуксии вокруг всей панели читались как ошибка */
+.lead-done:focus,.lead-done:focus-visible{outline:none}
 .lead-done h3{font-size:clamp(26px,3.4vw,40px);margin-bottom:14px}
 .done-sum{font-family:var(--mono);font-size:14px;line-height:1.7;white-space:pre-wrap;border-left:var(--rule) solid var(--ink);padding:4px 0 4px 16px;margin-bottom:22px}
 .done-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
