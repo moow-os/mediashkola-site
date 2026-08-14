@@ -15,11 +15,38 @@
       if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
     });
   }
-  if (sections.length && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) activate(e.target.id); });
-    }, { rootMargin: '-45% 0px -45% 0px' }); /* полоса-центр вьюпорта */
-    sections.forEach(function (s) { io.observe(s); });
+  /* Было: IntersectionObserver с полосой -45%/-45% и activate() по каждой
+     isIntersecting-записи. Побеждала ПОСЛЕДНЯЯ обработанная запись, а не та
+     секция, которую человек читает: при скролле вниз верх следующей секции
+     входит в полосу раньше, чем низ текущей её покидает. Плюс секция короче
+     полосы могла проскочить её между событиями и не зажечься вообще.
+     Замер до правки: на 4 секциях из 8 (эфир, курсы, цены, вопросы) рельс
+     показывал СЛЕДУЮЩУЮ; «03 ЦЕНЫ» гасла через 13px после начала своей секции.
+
+     Стало: считаем геометрией. Секции идут встык, поэтому линию чтения
+     (35% высоты экрана — сразу под липкой шапкой) всегда накрывает ровно одна.
+     Порядок срабатывания больше ни на что не влияет. */
+  if (sections.length) {
+    var spyTick = 0;
+    function currentSection() {
+      var line = window.innerHeight * 0.35, hit = null;
+      sections.forEach(function (s) {
+        var b = s.getBoundingClientRect();
+        if (b.top <= line && b.bottom > line) hit = s;
+      });
+      if (!hit) hit = (window.scrollY <= sections[0].getBoundingClientRect().top + window.scrollY)
+        ? sections[0] : sections[sections.length - 1];
+      return hit.id;
+    }
+    function spy() {
+      spyTick = 0;
+      activate(currentSection());
+    }
+    window.addEventListener('scroll', function () {
+      if (!spyTick) spyTick = requestAnimationFrame(spy);
+    }, { passive: true });
+    window.addEventListener('resize', spy, { passive: true });
+    spy();
   }
 
   /* ===== Мобильный прогресс-бар ===== */
