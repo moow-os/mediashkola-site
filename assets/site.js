@@ -72,12 +72,19 @@
     return '<span class="ls-row"><span class="t">' + s.time.split('–')[0] + '</span>' +
       s.course.replace('УСПЕШНЫЙ ОРАТОР', 'ОРАТОР') + ' · ' + s.age.replace('–', NB) + '</span>';
   }
+  /* GRAFT ревизии 5: длинные названия ломаем САМИ по точке/пробелу, а не отдаём браузеру —
+     overflow-wrap рвал слова в середине. «СКЛЕЙКА.СВОП» → «СКЛЕЙКА. / СВОП». */
+  function tileTitle(t) {
+    if (t.indexOf('.') > 0 && t.length > 11) return t.replace(/\.\s*/, '.<br>');
+    if (t.length > 13 && t.indexOf(' ') > 0) return t.replace(/\s(?=\S+$)/, '<br>');
+    return t;
+  }
   function cellContent(ds) {
     var p = [], ev = events[ds], fin = finals[ds], tv = shoots[ds];
     /* время видно прямо в ячейке — правка Кати: «здесь будет везде время» */
-    if (ev && showEv) p.push('<span class="ev-tile">' + ev.title + '</span>' +
+    if (ev && showEv) p.push('<span class="ev-tile">' + tileTitle(ev.title) + '</span>' +
       (ev.time ? '<span class="ev-t">' + ev.time + '</span>' : ''));
-    if (tv && showTv) p.push('<span class="tv-tile">СЪЁМКИ ТВ' +
+    if (tv && showTv) p.push('<span class="tv-tile">СЪЁМКА<br>ТВ' +
       (tv.time ? '<span class="ev-t">' + tv.time + '</span>' : '') + '</span>');
     if (fin) p.push('<span class="fin">ФИНАЛ: ' + fin.media + '</span>');
     /* финал идёт целый день, поэтому часы групп под ним не показываем (правка Кати) */

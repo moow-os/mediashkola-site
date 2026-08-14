@@ -44,10 +44,23 @@
     <section class="hero" id="hero">
       <a class="live-pill" href="#calendar"><span class="dot" aria-hidden="true"></span>ИДЁТ ЗАПИСЬ НА СЕНТЯБРЬ</a>
       <h1 data-animate aria-label="Не смотри. Создавай.">НЕ <span class="strike">СМОТРИ</span>.<br><span class="type">СОЗДАВАЙ.</span><span class="caret" aria-hidden="true"></span></h1>
+      <!-- GRAFT из ревизии 5 Claude Design: две правки клиента (структура из трёх строк +
+           «получить программу обучения» под каждым курсом) сведены в одну конструкцию —
+           курсы стали строками эфирного журнала, у каждой своё действие. -->
       <div class="hero-sub">
         <p class="hs-lead">Медиашкола в Краснодаре</p>
-        <p>Курс «Медиа» — съёмка, монтаж, работа в кадре.</p>
-        <p>Курс «Успешный оратор» — речь, сцена, уверенность.</p>
+        <div class="hs-rows">
+          <div class="hs-row">
+            <span class="n">01</span>
+            <span class="hs-txt">Курс «Медиа» — съёмка, монтаж, работа в кадре.</span>
+            <a class="hs-act" href="#lead-form">Получить программу обучения</a>
+          </div>
+          <div class="hs-row">
+            <span class="n">02</span>
+            <span class="hs-txt">Курс «Успешный оратор» — речь, сцена, уверенность.</span>
+            <a class="hs-act" href="#lead-form">Получить программу обучения</a>
+          </div>
+        </div>
       </div>
       <div class="badges" role="list">
         <span role="listitem">Сезон 26/27</span>
@@ -131,13 +144,15 @@
       <h2>Сколько стоит</h2>
       <div class="prices">
         <div class="price">
+          <span class="n">01</span>
+          <span class="num">8 000 ₽<span class="per">/мес</span></span>
           <span class="who">МЕДИА · 7–9 лет</span>
-          <span class="num">8 000 ₽/мес</span>
           <a class="btn-outline" href="#lead-form">Записаться</a>
         </div>
         <div class="price">
+          <span class="n">02</span>
+          <span class="num">11 000 ₽<span class="per">/мес</span></span>
           <span class="who">«Успешный оратор» и «Медиа» · 10–12 и 13–16 лет</span>
-          <span class="num">11 000 ₽/мес</span>
           <a class="btn-outline" href="#lead-form">Записаться</a>
         </div>
       </div>
@@ -177,11 +192,11 @@
            Ссылки на плейлисты Rutube взяты из её контент-дока. -->
       <p class="kicker tv-k">Программы на ТВ, в которых снимаются ученики</p>
       <ul class="tvlist">
-        <li><a href="https://rutube.ru/plst/1633699/" rel="noopener">Взрослые в ответе</a></li>
-        <li><a href="https://rutube.ru/plst/1633700/" rel="noopener">О, я знаю! <span class="tv-old">раньше «Битва умов»</span></a></li>
-        <li><a href="https://rutube.ru/plst/1698591/" rel="noopener">Мой маленький бизнес</a></li>
-        <li><a href="https://rutube.ru/plst/1628766/" rel="noopener">Шустрое утро</a></li>
-        <li><a href="https://rutube.ru/plst/1634480/" rel="noopener">Ярче всех</a></li>
+        <li><a href="https://rutube.ru/plst/1633699/" rel="noopener"><span class="n">01</span><span class="tv-name">Взрослые в ответе</span><span class="tv-src">Rutube · плейлист</span><span class="tv-go">Смотреть</span></a></li>
+        <li><a href="https://rutube.ru/plst/1633700/" rel="noopener"><span class="n">02</span><span class="tv-name">О, я знаю!<span class="tv-old">ранее «Битва умов»</span></span><span class="tv-src">Rutube · плейлист</span><span class="tv-go">Смотреть</span></a></li>
+        <li><a href="https://rutube.ru/plst/1698591/" rel="noopener"><span class="n">03</span><span class="tv-name">Мой маленький бизнес</span><span class="tv-src">Rutube · плейлист</span><span class="tv-go">Смотреть</span></a></li>
+        <li><a href="https://rutube.ru/plst/1628766/" rel="noopener"><span class="n">04</span><span class="tv-name">Шустрое утро</span><span class="tv-src">Rutube · плейлист</span><span class="tv-go">Смотреть</span></a></li>
+        <li><a href="https://rutube.ru/plst/1634480/" rel="noopener"><span class="n">05</span><span class="tv-name">Ярче всех</span><span class="tv-src">Rutube · плейлист</span><span class="tv-go">Смотреть</span></a></li>
       </ul>
 
       <!-- Лента отзывов. Источник: DEV/data/reviews-yandex-2026-08-14.json — 87 отзывов
