@@ -192,6 +192,18 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .trust a.val{text-decoration:none}
 .trust a.val:hover{color:var(--accent)}
 .nowrap{white-space:nowrap}
+/* ===== ЛЕНТА ОТЗЫВОВ — бесконечная плёнка =====
+   Дорожка содержит два одинаковых набора карточек и едет ровно на половину своей
+   ширины: в момент возврата второй набор стоит там же, где стоял первый, поэтому
+   шва не видно. Ведёт себя как плёнка: жёсткие обрезы по краям, общие линейки,
+   никаких точек-пагинаций. Наведение и фокус останавливают ход. */
+.rev-marquee{margin-top:28px;overflow:hidden;border-top:var(--rule) solid var(--ink);border-bottom:var(--rule) solid var(--ink)}
+.rev-track{display:flex;align-items:stretch;width:max-content;animation:revscroll 64s linear infinite}
+.rev-copy{display:flex;align-items:stretch}
+.rev-marquee:hover .rev-track,.rev-marquee:focus-within .rev-track{animation-play-state:paused}
+@keyframes revscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.rev-track .review{flex:0 0 clamp(280px,24vw,360px);padding:22px 24px;border-right:var(--rule) solid var(--ink);border-bottom:none}
+.rev-track .review blockquote{font-size:17px;line-height:1.45;margin-bottom:12px}
 .reviews{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--rule) solid var(--ink);max-width:1200px;margin-top:28px}
 .review{padding:22px 24px;border-right:var(--rule) solid var(--ink)}
 .review:last-child{border-right:none}
@@ -392,4 +404,8 @@ footer ul{list-style:none}
   .hero h1 .type{max-width:100%}
   .hero h1.play .caret{display:none} /* без анимации мигать нечему — тире не показываем */
   .ovl.open .photo .frame{opacity:1;transform:none}
+  /* лента не едет сама — читатель листает её сам, дубль убран, чтобы не было повторов */
+  .rev-marquee{overflow-x:auto}
+  .rev-track{animation:none}
+  .rev-copy{display:none}
 }
