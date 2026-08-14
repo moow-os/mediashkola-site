@@ -16,7 +16,7 @@
   <button class="menu-btn" aria-expanded="false" aria-controls="mainnav">Меню</button>
   <nav class="anchors" id="mainnav" aria-label="Разделы">
     <a href="#calendar">Расписание</a>
-    <a href="kurs.html">Курс «Медиа»</a>
+    <a href="#courses">Курсы</a>
     <a href="#prices">Цены</a>
     <a href="#team">Педагоги</a>
     <a href="#trust">О школе</a>
@@ -31,10 +31,12 @@
       <div class="efir-label">Эфирная сетка</div>
       <a href="#hero"><span class="n">00</span> <span class="lbl-t">Эфир</span><span class="lbl-d">Эфир</span></a>
       <a href="#calendar"><span class="n">01</span> <span class="lbl-t">Расписание</span><span class="lbl-d">Расписание</span></a>
-      <a href="#prices"><span class="n">02</span> <span class="lbl-t">Цены</span><span class="lbl-d">Цены</span></a>
-      <a href="#trust"><span class="n">03</span> <span class="lbl-t">Доверие</span><span class="lbl-d">Доверие</span></a>
-      <a href="#team"><span class="n">04</span> <span class="lbl-t">Лица</span><span class="lbl-d">Лица</span></a>
-      <a href="#lead-form"><span class="n">05</span> <span class="lbl-t">Запись</span><span class="lbl-d">Запись</span></a>
+      <a href="#courses"><span class="n">02</span> <span class="lbl-t">Курсы</span><span class="lbl-d">Курсы</span></a>
+      <a href="#prices"><span class="n">03</span> <span class="lbl-t">Цены</span><span class="lbl-d">Цены</span></a>
+      <a href="#trust"><span class="n">04</span> <span class="lbl-t">Доверие</span><span class="lbl-d">Доверие</span></a>
+      <a href="#team"><span class="n">05</span> <span class="lbl-t">Лица</span><span class="lbl-d">Лица</span></a>
+      <a href="#faq"><span class="n">06</span> <span class="lbl-t">Вопросы</span><span class="lbl-d">Вопросы</span></a>
+      <a href="#lead-form"><span class="n">07</span> <span class="lbl-t">Запись</span><span class="lbl-d">Запись</span></a>
     </div>
   </aside>
 
@@ -73,6 +75,47 @@
       <div class="agenda" id="agenda" aria-labelledby="cal-title"></div>
     </section>
 
+    <!-- Курсы и «что даём» — из контент-дока Кати (САЙТ МЕДИАШКОЛЫ 2026-2027).
+         «Успешный оратор» сайт называл на первом экране, но нигде не описывал. -->
+    <section class="strip" id="courses">
+      <p class="kicker">Обучение в Медиашколе</p>
+      <h2>Два курса</h2>
+      <div class="courses">
+        <article class="course">
+          <h3>Медиа</h3>
+          <p class="c-age">7–16 лет</p>
+          <p>Для тех, кто хочет стать универсальным медийщиком и создавать контент, который смотрят: фотография, вертикальные ролики, социальная реклама, события.</p>
+          <p class="c-who">Кому подойдёт</p>
+          <ul>
+            <li>новичкам, которые хотят снимать и монтировать с нуля</li>
+            <li>блогерам и авторам — нужны идеи, техника и свой стиль</li>
+            <li>тем, кто планирует поступать в творческие вузы</li>
+          </ul>
+          <a class="btn-outline" href="kurs.html">О курсе подробно</a>
+        </article>
+        <article class="course">
+          <h3>Успешный оратор</h3>
+          <p class="c-age">10–16 лет</p>
+          <p>Для тех, кто хочет говорить красиво и грамотно. Учим выступать так, чтобы слушали: ораторское мастерство, актёрские техники, интервью, подкасты, сценическая уверенность.</p>
+          <p class="c-who">Кому подойдёт</p>
+          <ul>
+            <li>тем, кто боится публичных выступлений и хочет говорить свободно</li>
+            <li>блогерам и ведущим, которым важен голос и харизма</li>
+            <li>тем, кто готовится к поступлению в творческие вузы</li>
+          </ul>
+          <a class="btn-outline" href="#lead-form">Записаться на консультацию</a>
+        </article>
+      </div>
+      <p class="kicker gives-k">Что получает ребёнок</p>
+      <ul class="gives">
+        <li>Практику на краевом ТВ и радио — работы выходят в эфир</li>
+        <li>Краевые и всероссийские фестивали и конкурсы</li>
+        <li>Свидетельство установленного образца — официальный документ для поступления</li>
+        <li>Портфолио, дипломы и сертификаты для творческих вузов</li>
+        <li>Пространство 300 кв. м в центре города: студия, свет, камеры, монтажные станции, телесуфлёр</li>
+      </ul>
+    </section>
+
     <section class="strip" id="prices">
       <p class="kicker">Цены открыто</p>
       <h2>Сколько стоит</h2>
@@ -103,6 +146,23 @@
         <div class="cell"><span class="lbl">Отзывы</span><a class="val" href="https://yandex.ru/maps" rel="noopener">Яндекс 5.0 / 87</a></div>
         <div class="cell"><span class="lbl">Основатель</span><span class="val">Генпродюсер <span class="nowrap">«Кубань 24»</span></span></div>
         <div class="cell"><span class="lbl">Награда</span><span class="val">ТЭФИ · «Все по-взрослому»</span></div>
+      </div>
+
+      <!-- Выпускники — из контент-дока Кати. Самый сильный аргумент для родителя,
+           на черновике до 14.08 его на сайте не было вовсе. -->
+      <div class="alumni">
+        <div class="al">
+          <span class="lbl">Куда поступают</span>
+          <p>Высшее театральное училище имени Щепкина, Школа-студия МХАТ, Институт медиа НИУ ВШЭ, СПбГИКиТ, Высшая школа журналистики СПбГУ, КубГУ</p>
+        </div>
+        <div class="al">
+          <span class="lbl">Где работают</span>
+          <p>Крупнейшие медиахолдинги страны: новости, съёмки, телеэфир, digital-проекты</p>
+        </div>
+        <div class="al">
+          <span class="lbl">Чем гордимся</span>
+          <p>Выпускники возвращаются в Медиашколу уже преподавателями</p>
+        </div>
       </div>
       <!-- TODO к запуску сезона: попросить родителей учеников ГОДОВОЙ школы оставить
            3–5 отзывов именно про курсы. В снятых 87 отзывах свежее почти всё про летний
@@ -202,6 +262,43 @@
       <p class="pr-note">Основатель школы — Дмитрий Крамарь, телеведущий, генеральный продюсер «Кубань&nbsp;24».</p>
     </section>
 
+    <!-- FAQ — ответы Кати из контент-дока, дословно по смыслу. На странице курса
+         свои три вопроса про технику и старт; здесь родительские, про выбор и результат. -->
+    <section class="strip" id="faq">
+      <p class="kicker">Частые вопросы</p>
+      <h2>Что спрашивают родители</h2>
+      <div class="faq">
+        <details>
+          <summary><span class="n">01</span> С какого возраста берёте?</summary>
+          <p class="a">На курс «Медиа» — с 7 до 16 лет, на «Успешного оратора» — с 10 до 16. Группы разделены по возрасту и темпу.</p>
+        </details>
+        <details>
+          <summary><span class="n">02</span> Что выбрать: «Медиа» или «Успешный оратор»?</summary>
+          <p class="a">«Медиа» — если хочется снимать, монтировать, фотографировать и создавать проекты. «Успешный оратор» — если запрос про речь, уверенность, выступления и работу в кадре. Лучше записаться на консультацию: куратор проведёт диагностику и даст подробную обратную связь.</p>
+        </details>
+        <details>
+          <summary><span class="n">03</span> Все ли ребята участвуют в съёмках программ для ТВ?</summary>
+          <p class="a">Да, все. Каждый ребёнок за время обучения обязательно примет участие в съёмках программы для эфира, а количество съёмок зависит от его инициативы. В программе «Взрослые в ответе» дети действительно работают журналистами: изучают информацию о герое, придумывают вопросы, готовятся к съёмке — это часть образовательного процесса.</p>
+        </details>
+        <details>
+          <summary><span class="n">04</span> Сколько длится обучение?</summary>
+          <p class="a">Образовательная программа рассчитана на два года. После этого срока школа даёт сертификат о прохождении обучения.</p>
+        </details>
+        <details>
+          <summary><span class="n">05</span> Если ребёнок без опыта — подойдёт?</summary>
+          <p class="a">Да. Мы для этого и существуем: чтобы у ребёнка появился опыт, он стал увереннее, перестал стесняться камеры и получил полезные для жизни навыки.</p>
+        </details>
+        <details>
+          <summary><span class="n">06</span> Что если ребёнок не из Краснодара?</summary>
+          <p class="a">У нас учились ребята из Армавира, Туапсе, Апшеронска и Новороссийска. Если есть желание развиваться в медиа, это не проблема: программа 2026 года устроена так, что поездки в Краснодар можно планировать заранее.</p>
+        </details>
+        <details>
+          <summary><span class="n">07</span> Можно ли получить налоговый вычет?</summary>
+          <p class="a">Школа работает по образовательной лицензии и предоставляет документы об оплате. Возможность вычета зависит от права конкретного налогоплательщика и требований ФНС.</p>
+        </details>
+      </div>
+    </section>
+
     <section class="strip" id="lead-form">
       <div class="cta-final">
         <h2>Сезон стартует 6 сентября</h2>
@@ -279,7 +376,13 @@
         <ul><li>Лицензия № 08274</li><li>ТЭФИ · «Кубань 24»</li><li>Яндекс 5.0 / 87</li></ul>
       </div>
       <div><span class="lbl">Связь</span>
-        <ul><li><a href="tel:+79094664644">+7 909 466-46-44</a></li><li><a href="https://t.me/mediashkola_krd" rel="noopener">@mediashkola_krd</a></li></ul>
+        <ul>
+          <li><a href="tel:+79094664644">+7 909 466-46-44</a></li>
+          <li><a href="https://t.me/mediashkola_krd" rel="noopener">Телеграм</a></li>
+          <li><a href="https://vk.ru/mediashkolatv" rel="noopener">ВКонтакте</a></li>
+          <li><a href="https://www.instagram.com/mediashkolakrd" rel="noopener">Инстаграм</a></li>
+          <li><a href="https://medialager.ru/" rel="noopener">Летний медиалагерь</a></li>
+        </ul>
       </div>
       <div class="foot-line">НЕ СМОТРИ. СОЗДАВАЙ. · СЕЗОН 26/27</div>
     </footer>
