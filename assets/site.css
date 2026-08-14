@@ -114,11 +114,15 @@ section[id],.hero[id]{scroll-margin-top:calc(var(--nav-h) + 12px)}
 .months button[aria-pressed="true"]{background:var(--ink);color:#fff}
 .months button:not([aria-pressed="true"]):hover{box-shadow:inset 0 -4px 0 var(--accent)}
 .legend{display:flex;gap:24px;margin:0 0 16px;flex-wrap:wrap}
-.legend button{display:flex;align-items:center;gap:10px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;border:var(--rule) solid transparent}
-.legend .sw{width:18px;height:18px}
+/* фильтры обязаны выглядеть нажимаемыми БЕЗ наведения (на телефоне ховера нет),
+   а выключенное состояние — оставаться читаемым: раньше это была прозрачность .35,
+   то есть текст уходил примерно в 2:1 (аудит design-review 14.08) */
+.legend button{display:flex;align-items:center;gap:10px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;padding:8px 14px;border:var(--rule) solid var(--ink);background:var(--bg)}
+.legend .sw{width:18px;height:18px;border:var(--rule) solid var(--ink)}
 .legend .sw.ev{background:var(--accent)} .legend .sw.ls{background:var(--ink)}
-.legend button[aria-pressed="false"]{opacity:.35}
-.legend button:hover{border-color:var(--ink)}
+.legend button[aria-pressed="false"]{border-style:dashed}
+.legend button[aria-pressed="false"] .sw{background:transparent}
+.legend button:hover{box-shadow:inset 0 -4px 0 var(--accent)}
 table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .grid th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;font-weight:500;border:var(--rule) solid var(--ink);padding:10px 8px;text-align:left}
 .grid td{border:var(--rule) solid var(--ink);vertical-align:top;height:118px;padding:0;position:relative}
