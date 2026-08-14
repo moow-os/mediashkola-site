@@ -88,8 +88,10 @@ main.content{grid-column:2;min-width:0}
 .hero h1.play .type{animation:type .8s steps(9) 1s forwards}
 @keyframes type{to{max-width:100%}}
 .hero h1 .caret{display:none}
-.hero h1.play .caret{display:inline-block;width:.52em;height:.09em;margin-left:.08em;background:var(--ink);vertical-align:baseline;animation:caret 1s step-end 1s 3} /* горизонтальный курсор-подчёркивание, как в мокапе */
-@keyframes caret{50%{opacity:0}}
+.hero h1.play .caret{display:inline-block;width:.52em;height:.09em;margin-left:.08em;background:var(--ink);vertical-align:baseline;animation:caret 1s step-end 1s 3 forwards} /* горизонтальный курсор-подчёркивание, как в мокапе */
+/* курсор обязан ГАСНУТЬ после последнего мигания: раньше он оставался статичным
+   тире рядом с точкой и читался как опечатка (аудит design-review 14.08) */
+@keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
 /* первый экран обязан назвать предмет, а не только настроение: слоган — про мотив,
    эта строка — про то, что это за школа и чему учит (аудит design-review 14.08) */
 .hero-sub{font-size:20px;line-height:1.45;max-width:680px;margin:0 0 24px}
@@ -366,5 +368,6 @@ footer ul{list-style:none}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .hero h1 .strike::after{width:104%}
   .hero h1 .type{max-width:100%}
+  .hero h1.play .caret{display:none} /* без анимации мигать нечему — тире не показываем */
   .ovl.open .photo .frame{opacity:1;transform:none}
 }
