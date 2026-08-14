@@ -43,6 +43,7 @@ header.top{position:sticky;top:0;z-index:90;display:flex;align-items:center;gap:
 .wordmark:hover{background:var(--ink)}
 nav.anchors{display:flex;gap:28px;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
 nav.anchors a{text-decoration:none;border-bottom:2px solid transparent;padding:4px 0}
+.nav-cta-mob{display:none} /* дубль главного действия — только внутри мобильного меню */
 /* ПРАВИЛО КЕГЛЯ (аудит style-ops 14.08): фуксия даёт 3.91:1 на фоне и 3.98:1 под белым —
    ниже порога AA (4.5) для мелкого текста и выше порога для крупного (3.0).
    Значит фуксия не носит текст мельче 18.66px/700: на мелком она работает
@@ -333,6 +334,9 @@ footer ul{list-style:none}
   .consent{min-height:44px;align-items:center}
   .consent input{width:24px;height:24px;margin-top:0}
   nav.anchors.open{display:flex;position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;background:var(--bg);border-bottom:var(--rule) solid var(--ink);padding:16px 20px;gap:14px}
+  /* главное действие не должно пропадать именно там, где чаще всего открывают —
+     с телефона в шапке видно только «МШ» и «Меню» (аудит design-review, второй проход) */
+  nav.anchors.open .nav-cta-mob{display:flex;justify-content:center;background:var(--accent);color:#fff;font-family:var(--display);font-weight:700;font-size:19px;padding:12px 20px;border-bottom:none;margin-top:4px}
   .hero{padding:28px 20px 16px}
   .hero h1{min-height:auto}
   section.strip{padding:28px 20px}
