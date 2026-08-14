@@ -107,7 +107,11 @@ main.content{grid-column:2;min-width:0}
 .hs-act{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap;flex:none;border-bottom:2px solid var(--ink);padding-bottom:3px}
 .hs-act:hover{border-bottom-color:var(--accent)}
 /* две кнопки под описанием курса — «получить программу обучения» (правка Кати) */
-.c-actions{margin-top:auto;display:flex;gap:12px;flex-wrap:wrap;padding-top:4px}
+/* действия карточки курса — один столбец во всю ширину карточки.
+   Было: flex-ряд с переносом. Две кнопки давали 193+12+298=503px при 502px
+   доступных и срывались в столбик рваной ширины (три разные ширины на две
+   карточки). Теперь ширина одна, левый край один. */
+.c-actions{margin-top:auto;display:grid;gap:10px;padding-top:14px}
 /* программы на ТВ, где снимаются ученики */
 .tv-k{margin-top:28px}
 /* GRAFT ревизии 5: эфирный журнал вместо пяти равных клеток — полоса во всю ширину,
@@ -221,7 +225,10 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .course li{font-size:15px;line-height:1.4;padding:7px 0 7px 20px;position:relative;border-bottom:1px solid rgba(37,37,37,.18)}
 .course li::before{content:'—';position:absolute;left:0}
 .course li:last-child{border-bottom:none}
-.course .btn-outline{margin-top:auto;align-self:flex-start}
+/* прижим к низу живёт на контейнере .c-actions, а не на каждой кнопке:
+   иначе одинокая кнопка правой карточки вставала на уровень ВТОРОЙ кнопки левой,
+   и над ней зияла дыра в высоту кнопки */
+.course .btn-outline{text-align:center}
 .gives-k{margin-top:30px}
 .gives{list-style:none;border:var(--rule) solid var(--ink);max-width:1100px;counter-reset:g}
 .gives li{font-size:16px;padding:12px 20px;border-bottom:var(--rule) solid var(--ink);display:flex;gap:16px;align-items:baseline}
@@ -392,6 +399,12 @@ footer ul{list-style:none}
   .hero,section.strip{padding-left:32px;padding-right:32px}
   footer{padding:28px 32px;grid-template-columns:1fr 1fr}
   .team{grid-template-columns:repeat(3,1fr);gap:26px 20px}
+  /* три фильтра перестают помещаться в ряд раньше телефона: на 768 доступно 648px,
+     а подписи целиком просят 666 + зазоры — ряд рвался на 2+1 рваной ширины.
+     Ниже 1024 подпись идёт короткой (день недели снят), плитки равные. */
+  .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+  .legend .lg-l{display:none}
+  .legend .lg-s{display:inline}
 }
 @media (max-width:900px){
   .team{grid-template-columns:repeat(2,1fr)}
@@ -414,14 +427,11 @@ footer ul{list-style:none}
      (замер design-review 14.08: было 27–43px на восьми элементах) */
   .menu-btn,.months button,.legend button,.live-pill,.btn-outline,.wordmark{min-height:44px;display:inline-flex;align-items:center}
   .months button,.legend button{justify-content:center}
-  /* три фильтра в столбик отъедали 180px до первой строки сетки — то есть на 390
-     календарь начинался ниже сгиба. Один ряд из трёх равных плиток: 47px вместо 180,
-     подпись под образцом цвета, день недели снят (он есть в списке под сеткой). */
-  .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+  /* на телефоне сетка легенды (задана выше, ≤1023) ещё и складывается:
+     подпись уходит под образец цвета — иначе три чипа в ряд не влезают в 350px.
+     Было 180px в столбик, стало 49 — календарь поднялся над сгибом. */
   .legend button{flex-direction:column;gap:5px;padding:7px 4px;font-size:12px;letter-spacing:.04em;line-height:1;text-align:center}
   .legend .sw{width:16px;height:16px}
-  .legend .lg-l{display:none}
-  .legend .lg-s{display:inline}
   .live-pill{gap:12px}
   .trust a.val{min-height:44px;display:inline-flex;align-items:center}
   nav.anchors.open a{min-height:44px;display:flex;align-items:center}
