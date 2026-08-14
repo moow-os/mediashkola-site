@@ -427,8 +427,19 @@ footer ul{list-style:none}
   .efir a .lbl-d{display:none}
   .efir a{position:relative}
   .efir a .lbl-t{display:block;position:absolute;left:40px;top:4px;opacity:0;pointer-events:none;background:var(--bg);padding:2px 8px;border:1px solid var(--ink);font-size:12px;white-space:nowrap;z-index:5}
-  .efir a.active .lbl-t{opacity:1}
-  .efir a::after{display:none}
+  /* Всплывающая подпись висела постоянно у активного пункта и ложилась ПОВЕРХ
+     контентной колонки — в одном кадре накрыла заголовок «СЕНТЯБРЬ 2026», в другом
+     ячейку календаря (замер: z-index 5 над td). Календарь закрывать нечем не
+     оправдано. Теперь подпись показывается только по наведению и с клавиатуры,
+     а «вы здесь» держит сам рельс: номер жирнеет, под ним фуксиевая черта.
+     Фуксия тут — черта, а не текст: на 12px она текст носить не имеет права
+     (3.91:1 при норме 4.5), это правило кегля из tokens.json. */
+  .efir a.active .lbl-t{opacity:0}
+  .efir a:hover .lbl-t,.efir a:focus-visible .lbl-t{opacity:1}
+  .efir a{flex-direction:column;align-items:flex-start;gap:3px}
+  .efir a::after{display:block;width:0}
+  .efir a.active::after{width:20px}
+  .efir a:hover::after{width:12px}
   .efir a .n{font-size:12px;padding:4px 0}
   /* 5 пунктов навигации на планшете не помещались и рвали шапку на две строки */
   header.top{padding:0 32px;gap:20px}
