@@ -88,7 +88,11 @@ main.content{grid-column:2;min-width:0}
 @keyframes strike{to{width:104%}}
 .hero h1 .type{display:inline-block;overflow-x:clip;overflow-y:visible;white-space:nowrap;vertical-align:bottom;max-width:0}
 .hero h1.play .type{animation:type .9s steps(11) 1s forwards}
-@keyframes type{to{max-width:100%}}
+/* Набор открывается до ширины СВОЕГО ТЕКСТА, а не контейнера. Было 100%: на 1440
+   строка в контейнер влезала и дефект не всплывал, а на 1024 контейнер 716px
+   против 763px набора — последние 47px, то есть ТОЧКА и часть «А», оставались
+   под overflow:clip навсегда. Слоган заморожен Куратором, терять его знаки нельзя. */
+@keyframes type{to{max-width:max-content}}
 .hero h1 .caret{display:none}
 .hero h1.play .caret{display:inline-block;width:.52em;height:.09em;margin-left:.08em;background:var(--ink);vertical-align:baseline;animation:caret 1s step-end 1s 3 forwards} /* горизонтальный курсор-подчёркивание, как в мокапе */
 /* курсор обязан ГАСНУТЬ после последнего мигания: раньше он оставался статичным
