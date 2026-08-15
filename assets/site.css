@@ -312,8 +312,20 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 /* ===== ЦЕНЫ ===== */
 /* GRAFT ревизии 5: не карточки, а строки бухгалтерской книги. Клиент вычеркнула
    описания и время — интерес держит контраст масштаба и линейка, а не текст. */
-.prices{border-top:var(--rule) solid var(--ink);max-width:1200px}
-.price{display:flex;align-items:baseline;gap:28px;padding:20px 4px;border-bottom:var(--rule) solid var(--ink)}
+/* сетка живёт на КОНТЕЙНЕРЕ, строки берут её через subgrid: иначе каждая строка
+   считает треки сама, и колонки двух цен разъезжались на 23px («8 000» уже,
+   чем «11 000»), то есть сопоставить курс с курсом глазом было нельзя */
+.prices{border-top:var(--rule) solid var(--ink);max-width:1200px;display:grid;grid-template-columns:24px minmax(210px,max-content) minmax(0,1.4fr) minmax(0,1fr) auto}
+/* ЦЕНА КАК СТРОКА СЕТКИ (ход Claude Design, узел 2a). Курс и возраст лежали в
+   одной свободной строке, поэтому две цены не сопоставлялись: у первой курс
+   короткий, у второй длинная фраза, возрасты вставали на разных отметках.
+   Развожу по колонкам — разница читается геометрией, а не прозой; ни одного
+   нового слова, оба поля клиент назвала сама.
+   Его довод, который я принял: «„минимум информации“ ты понял как вычитание,
+   а клиент имела в виду отсутствие воды. В точке решения родитель выбирает не
+   сумму, а вариант — и ты отправляешь его скроллить назад за описанием». */
+.price{display:grid;grid-column:1/-1;grid-template-columns:subgrid;align-items:baseline;gap:28px;padding:20px 4px;border-bottom:var(--rule) solid var(--ink)}
+.price .age{font-size:13px;text-transform:uppercase;letter-spacing:.06em;line-height:1.4;color:rgba(37,37,37,.72)}
 .price .n{font-family:var(--mono);font-size:12px;color:rgba(37,37,37,.55);flex:none;width:24px}
 .price .num{font-weight:700;font-family:var(--display);font-size:clamp(40px,6.4vw,104px);line-height:.95;flex:none}
 .price .num .per{font-size:.34em;letter-spacing:.02em}
@@ -553,9 +565,12 @@ footer ul{list-style:none}
   .hs-row{flex-wrap:wrap;gap:6px 14px}
   .hs-txt{flex:1 1 100%;order:2}
   .hs-act{order:3;white-space:normal}
-  .price{flex-wrap:wrap;gap:6px 20px;padding:18px 0}
-  .price .who{flex:1 1 100%;order:3}
-  .price .btn-outline{order:4;align-self:flex-start}
+  /* на телефоне колонки схлопываются в поток: номер и цена в строку,
+     курс и возраст под ними, действие последним */
+  .price{grid-template-columns:24px 1fr;gap:6px 20px;padding:18px 0}
+  .price .num{grid-column:2}
+  .price .who,.price .age{grid-column:2}
+  .price .btn-outline{grid-column:2;justify-self:start;margin-top:6px}
   .tvlist a{flex-wrap:wrap;gap:6px 16px;padding:14px 0}
   .tv-name{flex:1 1 100%;order:2}
   .tv-src{order:3}
