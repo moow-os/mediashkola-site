@@ -49,7 +49,8 @@ nav.anchors a{text-decoration:none;border-bottom:2px solid transparent;padding:4
    Значит фуксия не носит текст мельче 18.66px/700: на мелком она работает
    подчёркиванием, полосой или заливкой-без-текста, а читает пользователь чернила. */
 nav.anchors a:hover{border-bottom-color:var(--accent)}
-.nav-cta{margin-left:auto;border:var(--rule) solid var(--ink);padding:10px 22px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+.nav-cta{margin-left:auto;border:var(--rule) solid var(--ink);background:var(--ink);color:#fff;padding:10px 22px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+.nav-cta:hover{background:var(--bg);color:var(--ink);box-shadow:inset 0 -4px 0 var(--accent)}
 .nav-cta:hover{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:inset 0 -4px 0 var(--accent)}
 .menu-btn{display:none;margin-left:auto;border:var(--rule) solid var(--ink);padding:8px 14px;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
 
@@ -319,6 +320,15 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .price .who{font-size:13px;text-transform:uppercase;letter-spacing:.06em;flex:1;line-height:1.4}
 .price .btn-outline{flex:none;align-self:center}
 .btn-outline{display:inline-block;border:var(--rule) solid var(--ink);padding:10px 22px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+/* ВТОРОЙ РАНГ — масса чернил, а не рамка (разбор Claude Design, узел 1a).
+   Обводка 13px это ранг «сноска», и она была назначена всем шести призывам сразу:
+   до 6200px страницы ни одно действие не весило больше соседнего текста.
+   Вес даём чернилами, а не второй краской — белое на чернилах 15.33:1, фуксии
+   не прибавилось ни капли, правило кегля фуксии не задето. Первый ранг остаётся
+   один и там же, где был: скотч-кнопка в форме. Ранг получает САМО действие
+   записи; «получить программу» и «о курсе подробно» остаются обводкой. */
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:var(--bg);color:var(--ink);box-shadow:inset 0 -4px 0 var(--accent)}
 .btn-outline:hover{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:inset 0 -4px 0 var(--accent)}
 .pr-note{font-size:14px;margin-top:12px;max-width:980px}
 
