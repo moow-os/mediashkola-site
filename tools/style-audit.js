@@ -34,7 +34,7 @@
     if (el.className && typeof el.className === 'string') s += '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.');
     return s;
   }
-  var out = { url: location.pathname, w: window.innerWidth, riso_violations: [], contrast_fails: [], radius_violations: [], shadow_nonflat: [], palette_strays: {}, fonts: {} };
+  var out = { url: location.pathname, w: window.innerWidth, riso_violations: [], contrast_fails: [], radius_violations: [], shadow_nonflat: [], palette_strays: {}, fonts: {}, clipped: [] };
   document.querySelectorAll('body *:not(script):not(style)').forEach(function (el) {
     var cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden') return;
@@ -75,6 +75,37 @@
     });
     var fam = cs.fontFamily.split(',')[0].replace(/['"]/g, '');
     out.fonts[fam] = (out.fonts[fam] || 0) + 1;
+    /* ОБРЕЗКА — с контролем внутри инструмента.
+       Голое scrollWidth > clientWidth врёт: у крупного дисплейного набора с
+       line-height < 1 глиф законно выходит за строчный бокс, и ничего не
+       теряется, пока никто из предков не режет. За сессию эта проба четырежды
+       подняла ложную тревогу (цена 8 000 ₽ была последней). Поэтому здесь
+       спрашиваем не «выходит ли», а «РЕЖЕТ ли кто-то» — то есть то же, что
+       увидит человек. Схема аудита раньше про обрезку не спрашивала вовсе,
+       а молчание инструмента не значит, что дефекта нет. */
+    var overW = el.scrollWidth - el.clientWidth > 1;
+    var overH = el.scrollHeight - el.clientHeight > 1;
+    if ((overW || overH) && el.clientWidth > 0) {
+      var n = el, clipper = null;
+      while (n && n !== document.documentElement) {
+        var nc = getComputedStyle(n);
+        var ox = nc.overflowX, oy = nc.overflowY;
+        /* Режет только hidden/clip. auto и scroll — это ПРОКРУТКА: содержимое
+           человеку доступно, значит потери нет (иначе детектор ругался бы на
+           ленту педагогов, которая листается пальцем). */
+        var hides = function (v) { return v === 'hidden' || v === 'clip'; };
+        if ((overW && hides(ox)) || (overH && hides(oy))) { clipper = n; break; }
+        n = n.parentElement;
+      }
+      if (clipper) {
+        out.clipped.push({
+          el: path(el), by: path(clipper),
+          w: el.scrollWidth + '>' + el.clientWidth,
+          h: el.scrollHeight + '>' + el.clientHeight,
+          text: (el.textContent || '').trim().slice(0, 30)
+        });
+      }
+    }
   });
   return JSON.stringify(out);
 })();
