@@ -633,7 +633,11 @@ footer ul{list-style:none}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .hero h1 .strike::after{width:104%}
-  .hero h1 .type{max-width:100%}
+  /* max-content, а не 100%: с отключёнными анимациями конечное состояние
+     задаётся ЗДЕСЬ, и при 100% слоган терял финальную точку ровно так же,
+     как терял её в анимированном пути (замер: 47px среза на 1024).
+     Правку анимации без этой строки нельзя считать полной. */
+  .hero h1 .type{max-width:max-content}
   .hero h1.play .caret{display:none} /* без анимации мигать нечему — тире не показываем */
   .ovl.open .photo .frame{opacity:1;transform:none}
   /* лента не едет сама — читатель листает её сам, дубль убран, чтобы не было повторов */
