@@ -108,7 +108,9 @@
   function hyphenBreak(t) { return t.replace(/(\S{5,})-(?=\S{5,})/g, '$1-<br>'); }
   function tileTitle(t) {
     if (t.indexOf('.') > 0 && t.length > 11) return hyphenBreak(t.replace(/\.\s*/, '.<br>'));
-    if (t.length > 13 && t.indexOf(' ') > 0) return hyphenBreak(t.replace(/\s(?=\S+$)/, '<br>'));
+    /* пробел СОХРАНЯЕМ перед переносом: в вертикальном корешке <br> скрыт стилем,
+       и без пробела «ПРОЕКТНАЯ СТУДИЯ» слипалась в «ПРОЕКТНАЯСТУДИЯ» */
+    if (t.length > 13 && t.indexOf(' ') > 0) return hyphenBreak(t.replace(/\s(?=\S+$)/, ' <br>'));
     return hyphenBreak(t);
   }
   /* Катя сама даёт короткое имя в скобках: «Онлайн-Лаборатория Катеевой (ОЛК)».

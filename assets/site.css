@@ -212,9 +212,37 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 @media (max-width:1279px){
   /* hyphens идёт ПЕРЕД break-word: если слово всё-таки не влезает, пусть его
      сначала попробуют перенести по слогам (html lang="ru", словарь у движка есть),
-     и только если и это не вышло — рубить. Так «ЛАБОРАТОРИЯ» на 768 становится
-     «ЛАБОРА-/ТОРИЯ», а не «ЛАБОРАТ/ОРИЯ». */
+     и только если и это не вышло — рубить. Здесь это страховка: ниже 1024
+     работает «корешок», и переносить уже почти нечего. */
   .ev-tile,.tv-tile{hyphens:auto;overflow-wrap:break-word}
+}
+/* «КОРЕШОК» (ход Claude Design, узел 1a). Плашка события встаёт вертикально,
+   как корешок кассеты: слово ограничено ВЫСОТОЙ ячейки (~135–225px), а не её
+   шириной (91px). Раньше я лечил тесноту переносом по слогам — но «КИНО-КЛУБ»
+   перестаёт работать как афиша, то есть платой шла ровно та плакатность, ради
+   которой всё и делается; а короткое имя вместо полного — потеря информации.
+   Дефицит был 7px по горизонтали при профиците ~100px по вертикали, поворот
+   на 90° конвертирует одно в другое. Честная цена хода: ряд событий выше.
+   Кегль остаётся 19px, то есть правило кегля фуксии не нарушено. */
+@media (max-width:1023px){
+  td:has(.ev-tile) .cellbtn{padding-right:34px}
+  td .ev-tile{
+    position:absolute;top:6px;right:6px;bottom:6px;margin:0;
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    display:flex;align-items:flex-start;
+    padding:8px 6px;hyphens:none;overflow-wrap:normal;
+    /* корешок обязан быть В ОДНУ колонку: «ПРОЕКТНАЯ СТУДИЯ» разъезжалась на две
+       (52px вместо 32px) и накрывала время — «17:00–18:30» срезалось до «17 / 18».
+       Перенос из разметки (tileTitle ставит <br> для горизонтальной плашки) здесь
+       гасим, ширина полосы становится постоянной и padding-right под неё точен. */
+    white-space:nowrap;
+  }
+  td .ev-tile br{display:none}
+  /* корешок занимает 38px справа; собственные поля времени (10px padding + 8px
+     margin с каждой стороны) съедали остаток, и «17:00–18:00» переполнялось
+     52px в 41px. Слева времени места достаточно, вертикали в ячейке с запасом. */
+  td:has(.ev-tile) .cellbtn{padding-right:40px}
+  td .ev-t{padding:3px 0 0;margin:0 0 0 10px}
 }
 .fin{font-weight:700;font-family:var(--display);font-size:15px;text-transform:uppercase;padding:6px 10px 0;display:block}
 .fin::before{content:'★ '}
