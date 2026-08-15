@@ -248,6 +248,13 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
      52px в 41px. Слева времени места достаточно, вертикали в ячейке с запасом. */
   td:has(.ev-tile) .cellbtn{padding-right:40px}
   td .ev-t{padding:3px 0 0;margin:0 0 0 10px}
+  /* Страховка на браузеры без :has() (Firefox до 121): без него ячейка с
+     событием не резервирует полосу и корешок наезжает на время. Тогда отступ
+     ставим ВСЕМ ячейкам — воскресные строки занятий станут чуть уже, зато
+     ничего не перекрывается. */
+  @supports not selector(:has(*)){
+    td .cellbtn{padding-right:40px}
+  }
 }
 .fin{font-weight:700;font-family:var(--display);font-size:15px;text-transform:uppercase;padding:6px 10px 0;display:block}
 .fin::before{content:'★ '}
@@ -330,6 +337,16 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
    сумму, а вариант — и ты отправляешь его скроллить назад за описанием». */
 .price{display:grid;grid-column:1/-1;grid-template-columns:subgrid;align-items:baseline;gap:28px;padding:20px 4px;border-bottom:var(--rule) solid var(--ink)}
 .price .age{font-size:13px;text-transform:uppercase;letter-spacing:.06em;line-height:1.4;color:rgba(37,37,37,.72)}
+/* Страховка на браузеры без subgrid (Chrome до 117, Safari до 16): без него
+   grid-template-columns:subgrid невалиден, строка схлопнулась бы в одну колонку
+   и цена с курсом встали бы друг под другом. Возвращаем прежний ряд — колонки
+   не совпадут по вертикали, но строка читается. */
+@supports not (grid-template-columns: subgrid){
+  .prices{display:block}
+  .price{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 24px}
+  .price .who,.price .age{flex:0 1 auto}
+  .price .btn-outline{margin-left:auto}
+}
 .price .n{font-family:var(--mono);font-size:12px;color:rgba(37,37,37,.55);flex:none;width:24px}
 .price .num{font-weight:700;font-family:var(--display);font-size:clamp(40px,6.4vw,104px);line-height:.95;flex:none}
 .price .num .per{font-size:.34em;letter-spacing:.02em}
