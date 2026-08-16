@@ -123,12 +123,20 @@
     var m = /^(.*?)\s*\(([^()]{2,12})\)\s*$/.exec(t);
     return (m && m[2].length < m[1].length) ? m[2] : t;
   }
+  /* Метка проекта — ПЕРВАЯ БУКВА его названия из кавычек, а не выученный глиф.
+     Критик контура (16.08) отметил: монограмма-символ требует, чтобы родитель
+     сначала выучил словарь значков. Буква названия читается без словаря.
+     Имён проектов в коде не зашито — берём из данных. */
+  function tvMark(t) {
+    var m = /«([^»]+)»/.exec(t || '');
+    return m ? m[1].charAt(0) : 'Т';
+  }
   function cellContent(ds, tight) {
     var p = [], ev = events[ds], fin = finals[ds], tv = shoots[ds];
     /* время видно прямо в ячейке — правка Кати: «здесь будет везде время» */
     if (ev && showEv) p.push('<span class="ev-tile">' + tileTitle(tight ? tileName(ev.title) : ev.title) + '</span>' +
       (ev.time ? '<span class="ev-t">' + ev.time + '</span>' : ''));
-    if (tv && showTv) p.push('<span class="tv-tile">СЪЁМКА<br>ТВ' +
+    if (tv && showTv) p.push('<span class="tv-tile"><i class="tv-mark">' + tvMark(tv.title) + '</i>СЪЁМКА<br>ТВ' +
       (tv.time ? '<span class="ev-t">' + tv.time + '</span>' : '') + '</span>');
     if (fin) p.push('<span class="fin">ФИНАЛ: ' + fin.media + '</span>');
     /* финал идёт целый день, поэтому часы групп под ним не показываем (правка Кати) */

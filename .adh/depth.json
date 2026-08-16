@@ -1,0 +1,47 @@
+{
+  "dimensions": {
+    "affective_or_social_sensitivity": 1,
+    "ambiguity": 1,
+    "cost_of_additional_analysis": 1,
+    "cost_of_error": 2,
+    "decision_lifetime": 2,
+    "dependency_coupling": 2,
+    "evidence_quality": 2,
+    "expected_value_of_information": 2,
+    "novelty": 1,
+    "reputational_exposure": 2,
+    "resource_commitment": 1,
+    "reversibility": 2,
+    "stakeholder_complexity": 2,
+    "time_pressure": 3
+  },
+  "fast_track_with_accepted_risk": false,
+  "hard_floors": [],
+  "material_triggers": [
+    "material_cost_of_error",
+    "multi_stakeholder_or_coupled",
+    "limited_ambiguity"
+  ],
+  "max_cycles": 3,
+  "rationale": [
+    "time_pressure_detected_but_no_authorized_risk_acceptance",
+    "selected=D2_STANDARD",
+    "routing_used_hard_floors_and_material_triggers",
+    "time_pressure_did_not_lower_evidence_floor"
+  ],
+  "required_evidence": [
+    "full_frame",
+    "distinct_alternatives",
+    "critic",
+    "arbiter",
+    "discriminating_probe"
+  ],
+  "revalidation_triggers": [
+    "task_contract_hash_changed",
+    "new_material_evidence",
+    "decision_owner_changed",
+    "risk_profile_increased"
+  ],
+  "selected_mode": "D2_STANDARD",
+  "skipped_checks": []
+}

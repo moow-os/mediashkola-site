@@ -1,0 +1,16 @@
+{"event": "STORE_INITIALIZED", "ts": "2026-08-16T13:33:48.675424+00:00"}
+{"content_hash": "sha256:69c6c840083bfa6eb15e2d6090c191415c268951edecbd92e83021a690dd88ba", "contract_id": "msh-site-treatment-2608", "event": "CONTRACT_BOUND", "source_path": "/Volumes/yooy-os/yooy-origin-store/The YooY Run Projects/МЕДИАШКОЛА/inbox/2026-08-16/ПРАВКИ ОТ КАТИ — 15-16.08 (из диалога).md", "ts": "2026-08-16T13:33:48.677486+00:00", "version": "1"}
+{"event": "STATE_TRANSITION", "to": "INGESTED", "ts": "2026-08-16T13:33:48.677649+00:00"}
+{"event": "ARTIFACT_SAVED", "file": "depth.json", "hash": "sha256:10e50ef1fbc66766529f98f4551b126c7cdedb4d0935c9ef6585f45bbbb23c17", "ts": "2026-08-16T13:33:48.787852+00:00", "type": "depth"}
+{"event": "ARTIFACT_SAVED", "file": "probe_contract_probe-calendar-ink-weight-2026-08-16.json", "hash": "sha256:57a8b0518a8418b76f789dc89bf0441b380b951b44712d290a7ea4b08abeeb88", "ts": "2026-08-16T13:38:27.932937+00:00", "type": "probe_contract"}
+{"event": "ARTIFACT_SAVED", "file": "receipt_receipt-msh-site-treatment-2026-08-16.json", "hash": "sha256:62e1994b34320b45877a872919ebce786e9aeb6d2671c5a3f04d2bfba8d74aaf", "ts": "2026-08-16T14:02:17.727806+00:00", "type": "receipt"}
+{"event": "VERIFICATION", "run": "verify-dd9de71a-ff3c-4b6f-a5cf-fb0e73417885", "status": "FAIL", "ts": "2026-08-16T14:02:17.853105+00:00", "what": "receipt"}
+{"event": "VERIFICATION", "run": "verify-31600058-4db6-4045-95ba-55f60e7a8870", "status": "FAIL", "ts": "2026-08-16T14:13:16.509087+00:00", "what": "receipt"}
+{"event": "ARTIFACT_SAVED", "file": "receipt_receipt-msh-site-treatment-2026-08-16.json", "hash": "sha256:c2ea4801550f2be3471a09f8ddc92c158058e002364bd3c09762f934d063bab8", "ts": "2026-08-16T14:13:37.712508+00:00", "type": "receipt"}
+{"event": "VERIFICATION", "run": "verify-8d1d2dec-7df7-472e-a3eb-7831b0b1b2ea", "status": "FAIL", "ts": "2026-08-16T14:13:37.829240+00:00", "what": "receipt"}
+{"action_class": "production", "allowed": false, "code": "EXPENSIVE_EXECUTION_BEFORE_DECISION_LOCK", "event": "GATE", "ts": "2026-08-16T14:13:37.941616+00:00"}
+{"event": "ARTIFACT_SAVED", "file": "receipt_receipt-msh-site-treatment-2026-08-16.json", "hash": "sha256:98363f126ddfdd0be134477691652213d986f876aeb940ef0a02d18bc13f97a7", "ts": "2026-08-16T14:19:46.122597+00:00", "type": "receipt"}
+{"event": "ARTIFACT_SAVED", "file": "receipt_receipt-msh-site-treatment-2026-08-16.json", "hash": "sha256:751a17b64688d8bedd47d13c01ddf7e7431816e19abcaf07149e79a3db3e14df", "ts": "2026-08-16T14:20:43.413097+00:00", "type": "receipt"}
+{"event": "VERIFICATION", "run": "verify-291bcf33-26a8-47d9-a2d4-587f170d0528", "status": "PASS", "ts": "2026-08-16T14:20:43.528347+00:00", "what": "receipt"}
+{"event": "ARTIFACT_SAVED", "file": "lock_lock-c93439114a.json", "hash": "sha256:40dfd0f876cacd98c25da9b220a4c927c56785cfea04bb34028996aecfa7eb6b", "ts": "2026-08-16T14:46:36.040197+00:00", "type": "lock"}
+{"action_class": "production", "allowed": true, "code": "PROJECT_GATE_READY", "event": "GATE", "ts": "2026-08-16T14:46:36.151065+00:00"}

@@ -1,0 +1,14 @@
+{
+  "verifier_run_id": "verify-8d1d2dec-7df7-472e-a3eb-7831b0b1b2ea",
+  "status": "FAIL",
+  "issues": [
+    {
+      "code": "SELF_CHECK_CLOSED_BLOCKING_GATE",
+      "severity": "BLOCKING",
+      "message": "Verifier result is not PASS",
+      "artifact_ref": null,
+      "remediation": null
+    }
+  ],
+  "evidence": []
+}

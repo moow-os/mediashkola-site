@@ -1,0 +1,21 @@
+{
+  "verifier_run_id": "verify-31600058-4db6-4045-95ba-55f60e7a8870",
+  "status": "FAIL",
+  "issues": [
+    {
+      "code": "GENERATOR_SELF_RATIFICATION",
+      "severity": "BLOCKING",
+      "message": "D2/D3 requires separate generator, critic, arbiter, and verifier run IDs",
+      "artifact_ref": null,
+      "remediation": null
+    },
+    {
+      "code": "SELF_CHECK_CLOSED_BLOCKING_GATE",
+      "severity": "BLOCKING",
+      "message": "Verifier result is not PASS",
+      "artifact_ref": null,
+      "remediation": null
+    }
+  ],
+  "evidence": []
+}

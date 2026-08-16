@@ -172,13 +172,33 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
    и не читался (правка Кати 14.08); длинное имя теперь переносится, а не режется */
 .ev-tile{background:var(--accent);color:#fff;font-family:var(--display);font-weight:700;font-size:clamp(19px,1.4vw,20px);line-height:1.05;text-transform:uppercase;padding:8px 10px;margin:6px 6px 0;display:block;letter-spacing:-.01em}
 .cellbtn:hover .ev-tile{background:var(--ink)}
-/* съёмочный день ТВ-проекта — чернильная плашка: фуксия остаётся сигналом субботних событий */
-.tv-tile{background:var(--ink);color:#fff;font-family:var(--display);font-weight:700;font-size:clamp(14px,1.1vw,17px);line-height:1.05;text-transform:uppercase;padding:8px 10px;margin:6px 6px 0;display:block;letter-spacing:-.01em}
-.cellbtn:hover .tv-tile{background:var(--accent)}
+/* ПЕРЕВЕС ВНУТРИ ЯЧЕЙКИ — решение lock-c93439114a от 16.08.
+   Измерено до правки: съёмки несли 92 702 кв. px чернил, занятия — ноль. Одиннадцать
+   съёмок в сентябре перевешивали воскресные занятия, которые школа и продаёт.
+   Заливка переезжает на занятия, съёмка становится контурной плашкой с буквой проекта.
+   Съёмки ОСТАЮТСЯ В ДАТАХ сетки — вынос во вторую полосу запрещён решением:
+   Катя просила показывать их «как например мероприятия ты указываешь по субботам». */
+.tv-tile{background:transparent;color:var(--ink);border:var(--rule) solid var(--ink);font-family:var(--display);font-weight:700;font-size:clamp(14px,1.1vw,17px);line-height:1.05;text-transform:uppercase;padding:7px 9px;margin:6px 6px 0;display:block;letter-spacing:-.01em}
+.tv-mark{display:inline-block;background:var(--ink);color:var(--bg);font-style:normal;font-size:.86em;line-height:1;padding:3px 5px;margin-right:5px;vertical-align:baseline}
+.cellbtn:hover .tv-tile{background:var(--accent);border-color:var(--accent);color:#fff}
+.cellbtn:hover .tv-mark{background:#fff;color:var(--accent)}
 /* время под плашкой чернилами: внутри фуксии мелкая строка давала 3.98 при норме 4.5
    (поймано собственным аудитом genome). Белое на чернилах внутри ТВ-плашки — 15.3, там можно */
 .ev-t{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:3px 10px 0;margin:0 8px}
-.tv-tile .ev-t{color:#fff;padding:4px 0 0;margin:0}
+.tv-tile .ev-t{color:var(--ink);padding:4px 0 0;margin:0}
+.cellbtn:hover .tv-tile .ev-t{color:#fff}
+
+/* Занятия получают чернила. Внутренние светлые полосы сверху и снизу обязательны:
+   на пробе четыре воскресенья подряд слились в одну непрерывную колонку, дни 6/13/20/27
+   перестали читаться раздельно — это записано в решении как downstream-ограничение. */
+.grid td:has(.ls-row) .cellbtn{
+  background:var(--ink);color:var(--bg);
+  box-shadow:inset 0 5px 0 var(--bg), inset 0 -5px 0 var(--bg);
+}
+.grid td:has(.ls-row) .daynum{color:var(--bg)}
+.grid td:has(.ls-row) .cellbtn:hover .daynum,
+.grid td:has(.ls-row) .cellbtn:focus-visible .daynum{color:var(--accent)}
+.grid td:has(.ls-row) .ls-row .t{color:var(--bg);opacity:.72}
 .legend .sw.tv{background:var(--ink);position:relative}
 .legend .sw.tv::after{content:'';position:absolute;inset:4px;border:1.5px solid var(--bg)}
 .ls-row{font-size:11px;letter-spacing:0;text-transform:uppercase;padding:2px 8px 0;display:flex;gap:6px;white-space:nowrap;overflow:hidden}
@@ -581,6 +601,11 @@ footer ul{list-style:none}
   .agenda .body{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
   .agenda .ev-tile{margin:0;width:max-content;max-width:100%}
   .agenda .ls-row{padding:0;white-space:normal}
+  /* Тот же перевес, что в сетке (lock-c93439114a): в списке занятия тоже держат
+     чернила, иначе на телефоне съёмка в рамке снова выглядит весомее занятия —
+     поймано при проверке мобильного вида. */
+  .agenda .daybtn:has(.ls-row) .body{background:var(--ink);color:var(--bg)}
+  .agenda .daybtn:has(.ls-row) .ls-row .t{color:var(--bg);opacity:.72}
   .reviews{grid-template-columns:1fr}
   /* строки журнала на телефоне складываются: текст на всю ширину, действие под ним */
   .hs-row{flex-wrap:wrap;gap:6px 14px}
