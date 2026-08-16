@@ -93,14 +93,18 @@ function moscowStamp(d) {
     + ', ' + p(t.getUTCHours()) + ':' + p(t.getUTCMinutes()) + ' МСК';
 }
 
+/* Секрет мог приехать с пробелом или переводом строки на конце — в URL это ломает
+   путь и Telegram отвечает 404, будто токена не существует. Подрезаем на входе. */
+function token(env) { return String(env.TG_BOT_TOKEN || '').trim(); }
+
 async function sendTelegram(env, text) {
   const ids = String(env.TG_CHAT_IDS || '').split(',').map((s) => s.trim()).filter(Boolean);
-  if (!env.TG_BOT_TOKEN || !ids.length) return { ok: false, reason: 'not_configured' };
+  if (!token(env) || !ids.length) return { ok: false, reason: 'not_configured' };
 
   /* Базу вынесли в переменную только затем, чтобы прогонять доставку на двойнике
      Telegram при проверках; в бою она не задаётся. */
   const base = env.TG_API_BASE || 'https://api.telegram.org';
-  const url = base + '/bot' + env.TG_BOT_TOKEN + '/sendMessage';
+  const url = base + '/bot' + token(env) + '/sendMessage';
   const results = await Promise.all(ids.map(async (chat_id) => {
     try {
       const r = await fetch(url, {
@@ -145,12 +149,28 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin) });
 
     if (url.pathname === '/health') {
-      return json({
+      /* Каждую ногу показываем отдельно: «не готово» должно говорить, ЧЕГО не хватает.
+         Токен проверяем у самого Telegram — наличие секрета не значит, что он рабочий.
+         Наружу отдаём только публичное имя бота, значение токена воркер не покидает. */
+      const state = {
         ok: true,
-        telegram: Boolean(env.TG_BOT_TOKEN && env.TG_CHAT_IDS),
-        sheet: Boolean(env.SHEET_WEBHOOK_URL),
+        bot_token: Boolean(token(env)),
+        chat_ids: String(env.TG_CHAT_IDS || '').split(',').filter(Boolean).length,
+        sheet_url: Boolean(env.SHEET_WEBHOOK_URL),
         sheet_token: Boolean(env.SHEET_TOKEN)
-      }, 200, origin);
+      };
+      if (token(env)) {
+        try {
+          const base = env.TG_API_BASE || 'https://api.telegram.org';
+          const r = await fetch(base + '/bot' + token(env) + '/getMe');
+          const b = await r.json().catch(() => ({}));
+          state.bot = b.ok ? '@' + b.result.username : 'токен отвергнут: ' + (b.description || r.status);
+        } catch (e) {
+          state.bot = 'Telegram недоступен: ' + String(e);
+        }
+      }
+      state.ready = Boolean(state.bot_token && state.chat_ids);
+      return json(state, 200, origin);
     }
 
     if (request.method !== 'POST') return json({ ok: false, error: 'method' }, 405, origin);

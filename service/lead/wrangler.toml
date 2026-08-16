@@ -7,7 +7,12 @@ compatibility_date = "2026-08-16"
 #   wrangler secret put TG_CHAT_IDS         — chat_id получателей через запятую
 #   wrangler secret put SHEET_WEBHOOK_URL   — необязательно: Apps Script для листа заявок
 #
-# Домен mediashkola.pro в Cloudflare стоит серым облаком (DNS-only, трафик идёт прямо
-# на GitHub Pages), поэтому маршрут вида mediashkola.pro/api/* НЕ сработает — воркер
-# живёт на своём workers.dev и вызывается из браузера через CORS.
-workers_dev = true
+# Домен mediashkola.pro стоит в Cloudflare серым облаком (DNS-only, трафик идёт прямо
+# на GitHub Pages), поэтому маршрут вида mediashkola.pro/api/* НЕ сработал бы: через
+# Cloudflare там ничего не проходит. Берём отдельный хост — Custom Domain заводит свою
+# проксируемую запись и сертификат только для api.mediashkola.pro, записи сайта не трогая.
+workers_dev = false
+
+[[routes]]
+pattern = "api.mediashkola.pro"
+custom_domain = true
