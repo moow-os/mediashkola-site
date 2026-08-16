@@ -65,12 +65,19 @@ function validate(raw) {
   return { lead: { parent_name, phone, course, messenger, page: clean(raw.page, 200) } };
 }
 
+/* +79094664644 → +7 (909) 466-46-44: сообщение читает и набирает человек. */
+function prettyPhone(phone) {
+  const d = digits(phone);
+  if (d.length !== 11) return phone;
+  return '+7 (' + d.substr(1, 3) + ') ' + d.substr(4, 3) + '-' + d.substr(7, 2) + '-' + d.substr(9, 2);
+}
+
 function leadText(lead, when) {
   return [
     '🎬 ЗАЯВКА С САЙТА · МЕДИАШКОЛА',
     '',
     'Родитель: ' + lead.parent_name,
-    'Телефон: ' + lead.phone,
+    'Телефон: ' + prettyPhone(lead.phone),
     'Курс: ' + lead.course,
     'Написать в: ' + lead.messenger,
     '',
@@ -90,7 +97,10 @@ async function sendTelegram(env, text) {
   const ids = String(env.TG_CHAT_IDS || '').split(',').map((s) => s.trim()).filter(Boolean);
   if (!env.TG_BOT_TOKEN || !ids.length) return { ok: false, reason: 'not_configured' };
 
-  const url = 'https://api.telegram.org/bot' + env.TG_BOT_TOKEN + '/sendMessage';
+  /* Базу вынесли в переменную только затем, чтобы прогонять доставку на двойнике
+     Telegram при проверках; в бою она не задаётся. */
+  const base = env.TG_API_BASE || 'https://api.telegram.org';
+  const url = base + '/bot' + env.TG_BOT_TOKEN + '/sendMessage';
   const results = await Promise.all(ids.map(async (chat_id) => {
     try {
       const r = await fetch(url, {
@@ -110,15 +120,18 @@ async function sendTelegram(env, text) {
   return { ok: results.some((r) => r.ok), results };
 }
 
-async function sendSheet(env, lead, when) {
+async function sendSheet(env, lead, at) {
   if (!env.SHEET_WEBHOOK_URL) return { ok: false, reason: 'not_configured' };
   try {
     const r = await fetch(env.SHEET_WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source: 'mediashkola.pro', when, ...lead })
+      /* Apps Script на text/plain не требует preflight и не спорит о CORS. */
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      redirect: 'follow',
+      body: JSON.stringify({ token: env.SHEET_TOKEN || '', source: 'mediashkola.pro', at, ...lead })
     });
-    return { ok: r.ok, status: r.status };
+    const body = await r.json().catch(() => ({}));
+    return { ok: r.ok && body.ok === true, status: r.status, description: body.error };
   } catch (e) {
     return { ok: false, description: String(e) };
   }
@@ -135,7 +148,8 @@ export default {
       return json({
         ok: true,
         telegram: Boolean(env.TG_BOT_TOKEN && env.TG_CHAT_IDS),
-        sheet: Boolean(env.SHEET_WEBHOOK_URL)
+        sheet: Boolean(env.SHEET_WEBHOOK_URL),
+        sheet_token: Boolean(env.SHEET_TOKEN)
       }, 200, origin);
     }
 
@@ -157,15 +171,28 @@ export default {
 
     const now = new Date();
     const when = moscowStamp(now);
-    const tg = await sendTelegram(env, leadText(lead, when));
 
-    if (env.SHEET_WEBHOOK_URL) ctx.waitUntil(sendSheet(env, lead, now.toISOString()));
+    /* Два адреса, оба нужны Кате (16.08): бот — чтобы увидеть сразу, таблица — чтобы
+       заявка легла рядом с лагерными. Пишем параллельно, судим по каждому отдельно. */
+    const [tg, sheet] = await Promise.all([
+      sendTelegram(env, leadText(lead, when)),
+      sendSheet(env, lead, now.toISOString())
+    ]);
 
     if (!tg.ok) {
-      console.error('lead delivery failed', JSON.stringify({ lead, tg }));
+      console.error('lead delivery failed', JSON.stringify({ lead, tg, sheet }));
       return json({ ok: false, error: 'delivery' }, 502, origin);
     }
 
-    return json({ ok: true, at: now.toISOString() }, 200, origin);
+    /* Бот принял, таблица нет — родителю отказывать не за что, но молчать нельзя:
+       вторым сообщением говорим людям, что строку придётся занести руками. */
+    if (env.SHEET_WEBHOOK_URL && !sheet.ok) {
+      console.error('sheet leg failed', JSON.stringify({ lead, sheet }));
+      ctx.waitUntil(sendTelegram(env,
+        '⚠️ Заявка выше НЕ записалась в таблицу «ЗАЯВКИ ЛАГЕРЬ 2026» — занесите строку руками.\n'
+        + 'Причина: ' + (sheet.description || sheet.status || sheet.reason || 'нет ответа')));
+    }
+
+    return json({ ok: true, at: now.toISOString(), sheet: sheet.ok }, 200, origin);
   }
 };
