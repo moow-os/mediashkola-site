@@ -255,13 +255,19 @@
 
   /* ===== ФОРМА ЗАПИСИ =====
      Поля утверждены Катей 13.08 (team.json → lead_form), других полей нет.
-     Транспорт заявок не выбран (U1) → форма ничего не отправляет молча:
-     собирает заявку, кладёт в localStorage и отдаёт родителю одним касанием.
-     Подключение транспорта = замена ОДНОЙ функции sendLead(). */
+
+     Транспорт: заявка уходит POST-ом на воркер-приёмник, он кладёт её в телеграм-бот
+     школы (service/lead/). Родитель ничего не пересылает руками — требование Кати
+     от 16.08. Пока LEAD_ENDPOINT пустой, форма работает запасным путём: заявка
+     сохраняется локально и родителя просят позвонить.
+
+     Включение = вписать сюда адрес воркера. Больше ничего менять не нужно. */
+  var LEAD_ENDPOINT = '';
+
   var form = document.getElementById('lead');
   if (form) {
     var done = document.getElementById('lead-done');
-    var TG = 'mediashkola_krd';
+    form.setAttribute('data-transport', LEAD_ENDPOINT ? 'auto' : 'manual');
 
     function err(id, on, msg) {
       var p = document.getElementById('e-' + id);
@@ -301,17 +307,33 @@
         + 'Курс: ' + lead.course + '\n'
         + 'Мессенджер: ' + lead.messenger;
     }
-    /* ЕДИНСТВЕННАЯ точка подключения транспорта.
-       Сейчас: сохранить локально + отдать текст родителю (ручная отправка).
-       Потом: fetch('<endpoint>', {method:'POST', body: JSON.stringify(lead)}). */
-    function sendLead(lead) {
+    /* Копия в браузере родителя — на случай, если сеть отвалится посреди отправки:
+       заявка не пропадает вместе с закрытой вкладкой. */
+    function keepLocal(lead) {
       try {
         var box = JSON.parse(localStorage.getItem('msh_leads') || '[]');
         box.push(lead);
         localStorage.setItem('msh_leads', JSON.stringify(box));
       } catch (e) { /* приватный режим — заявка всё равно на экране */ }
-      if (window.console) console.info('[МШ] заявка собрана', lead);
-      return { mode: 'manual' };
+    }
+
+    /* ЕДИНСТВЕННАЯ точка транспорта. Отдаёт Promise с {delivered: true|false}. */
+    function sendLead(lead) {
+      keepLocal(lead);
+      if (!LEAD_ENDPOINT || typeof fetch !== 'function') {
+        return Promise.resolve({ delivered: false, reason: 'no-endpoint' });
+      }
+      return fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lead)
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (b) {
+          return { delivered: r.ok && b.ok === true, reason: b.error || String(r.status) };
+        });
+      }).catch(function (e) {
+        return { delivered: false, reason: 'network' };
+      });
     }
 
     form.addEventListener('submit', function (e) {
@@ -330,15 +352,39 @@
         phone: val('phone'),
         course: val('course'),
         messenger: val('messenger'),
+        agree: true,
+        company: val('company'),
+        page: location.pathname,
         at: new Date().toISOString()
       };
-      sendLead(lead);
-      var text = leadText(lead);
-      document.getElementById('done-sum').textContent = text;
-      document.getElementById('done-tg').href = 'https://t.me/' + TG + '?text=' + encodeURIComponent(text);
-      form.hidden = true;
-      done.hidden = false;
-      done.focus();
+
+      var btn = form.querySelector('button[type="submit"]');
+      var label = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Отправляем…'; }
+
+      sendLead(lead).then(function (res) {
+        if (btn) { btn.disabled = false; btn.textContent = label; }
+
+        document.getElementById('done-sum').textContent = leadText(lead);
+        var kicker = document.getElementById('done-kicker');
+        var title = document.getElementById('done-title');
+        var note = document.getElementById('done-note');
+
+        if (res.delivered) {
+          kicker.textContent = 'Заявка отправлена';
+          title.textContent = 'Перезвоним сегодня';
+          note.textContent = 'Краснодар, ул. Рашпилевская, 131 · пн–вс с 10:00';
+        } else {
+          /* Не обещаем звонок, которого не будет: заявка до школы не дошла. */
+          kicker.textContent = 'Заявка сохранена';
+          title.textContent = 'Позвоните, пожалуйста';
+          note.textContent = 'Отправить автоматически не получилось. Наберите нас — заявка уже перед вами, её достаточно прочитать.';
+        }
+
+        form.hidden = true;
+        done.hidden = false;
+        done.focus();
+      });
     });
 
     /* чипы: снимаем ошибку сразу после выбора */

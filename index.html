@@ -394,18 +394,21 @@
 
         <button class="tape-cta" type="submit">Запись на консультацию</button>
         <p class="lead-note">Перезваниваем в тот же день. Никакой рассылки — только по вашей заявке.</p>
+        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+          <label for="f-company">Организация</label>
+          <input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off">
+        </div>
       </form>
 
       <div class="lead-done" id="lead-done" hidden tabindex="-1">
-        <p class="kicker">Заявка собрана</p>
-        <h3>Осталось одно касание</h3>
+        <p class="kicker" id="done-kicker">Заявка отправлена</p>
+        <h3 id="done-title">Перезвоним сегодня</h3>
         <pre class="done-sum" id="done-sum"></pre>
         <div class="done-actions">
-          <a class="tape-cta" id="done-tg" href="https://t.me/mediashkola_krd" target="_blank" rel="noopener">Отправить в Telegram</a>
           <a class="btn-outline" href="tel:+79186997307">Позвонить +7 918 699-73-07</a>
           <button class="btn-outline" id="done-back" type="button">Изменить заявку</button>
         </div>
-        <p class="lead-note">Краснодар, ул. Рашпилевская, 131 · пн–вс с 10:00</p>
+        <p class="lead-note" id="done-note">Краснодар, ул. Рашпилевская, 131 · пн–вс с 10:00</p>
       </div>
     </section>
 
