@@ -262,7 +262,7 @@
      сохраняется локально и родителя просят позвонить.
 
      Включение = вписать сюда адрес воркера. Больше ничего менять не нужно. */
-  var LEAD_ENDPOINT = '';
+  var LEAD_ENDPOINT = 'https://api.mediashkola.pro/lead';
 
   var form = document.getElementById('lead');
   if (form) {
