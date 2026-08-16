@@ -418,7 +418,14 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 /* ===== ЛИЦА МШ (команда) =====
    Плёночный кадр: ч/б фото + ксерокс-зерно, чернильный скотч держит кадр.
    Карточка не кликабельна → фуксии здесь нет. */
-.team{display:grid;grid-template-columns:repeat(4,1fr);gap:44px 38px;max-width:1200px}
+/* Ответ Кате 16.08 на «это будут пустые квадратики?»: нет. Сетка перестала быть жёсткой
+   решёткой — неполный последний ряд ЦЕНТРИРУЕТСЯ, а не висит слева. При девяти педагогах
+   было 4+4+1 с сиротой у левого края; стало 4+4+1 по центру. Работает на любом числе
+   карточек: клиент сказал, что состав ещё растёт.
+   Эпсилон в basis — страховка от субпиксельного округления: без него четвёртая карточка
+   изредка срывалась на следующую строку. */
+.team{display:flex;flex-wrap:wrap;justify-content:center;gap:44px 38px;max-width:1200px}
+.team > .tm{flex:0 1 calc((100% - 3 * 38px) / 4 - 0.5px)}
 .team-2{grid-template-columns:repeat(2,1fr);max-width:660px}
 .tm{margin:0}
 /* плёночная рамка вокруг кадра (GRAFT из мокапа ревизии 4) — не занимает поток, поэтому зазор сетки увеличен */
@@ -538,7 +545,8 @@ footer ul{list-style:none}
   .nav-cta{padding:10px 16px;font-size:12px;white-space:nowrap}
   .hero,section.strip{padding-left:32px;padding-right:32px}
   footer{padding:28px 32px;grid-template-columns:1fr 1fr}
-  .team{grid-template-columns:repeat(3,1fr);gap:26px 20px}
+  .team{gap:26px 20px}
+  .team > .tm{flex-basis:calc((100% - 2 * 20px) / 3 - 0.5px)}
   /* три фильтра перестают помещаться в ряд раньше телефона: на 768 доступно 648px,
      а подписи целиком просят 666 + зазоры — ряд рвался на 2+1 рваной ширины.
      Ниже 1024 подпись идёт короткой (день недели снят), плитки равные. */
@@ -547,7 +555,7 @@ footer ul{list-style:none}
   .legend .lg-s{display:inline}
 }
 @media (max-width:900px){
-  .team{grid-template-columns:repeat(2,1fr)}
+  .team > .tm{flex-basis:calc((100% - 20px) / 2 - 0.5px)}
   .courses{grid-template-columns:1fr}
   .course{border-right:none;border-bottom:var(--rule) solid var(--ink)}
   .course:last-child{border-bottom:none}
