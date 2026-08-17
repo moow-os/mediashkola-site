@@ -85,7 +85,10 @@
        а молчание инструмента не значит, что дефекта нет. */
     var overW = el.scrollWidth - el.clientWidth > 1;
     var overH = el.scrollHeight - el.clientHeight > 1;
-    if ((overW || overH) && el.clientWidth > 0) {
+    /* Служебно скрытое (aria-hidden, унесённое за экран) человеку не показывается —
+       его обрезка не потеря. Иначе детектор ловит honeypot формы (аудит 17.08). */
+    var offscreen = el.closest('[aria-hidden="true"]');
+    if ((overW || overH) && el.clientWidth > 0 && !offscreen) {
       var n = el, clipper = null;
       while (n && n !== document.documentElement) {
         var nc = getComputedStyle(n);

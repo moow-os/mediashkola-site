@@ -204,6 +204,10 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .grid td:has(.ls-row) .cellbtn:hover .daynum,
 .grid td:has(.ls-row) .cellbtn:focus-visible .daynum{color:var(--accent)}
 .grid td:has(.ls-row) .ls-row .t{color:var(--bg);opacity:.72}
+/* «СТАРТ» 6.09 стоит на воскресенье с занятиями — то есть на чернильной ячейке.
+   После рестайла 16.08 метка осталась тёмно-серой по тёмному (регресс, пойман аудитом
+   17.08: контраст ≠ 0). На чернилах метка светлая. */
+.grid td:has(.ls-row) .start-tag{border-color:rgba(253,253,253,.55);color:rgba(253,253,253,.85)}
 .legend .sw.tv{background:var(--ink);position:relative}
 .legend .sw.tv::after{content:'';position:absolute;inset:4px;border:1.5px solid var(--bg)}
 .ls-row{font-size:11px;letter-spacing:0;text-transform:uppercase;padding:2px 8px 0;display:flex;gap:6px;white-space:nowrap;overflow:hidden}
@@ -391,7 +395,7 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .pr-note{font-size:14px;margin-top:12px;max-width:980px}
 
 /* ===== ДОВЕРИЕ + ОТЗЫВЫ ===== */
-.trust{display:grid;grid-template-columns:repeat(4,1fr);border:var(--rule) solid var(--ink);max-width:1200px}
+.trust{display:grid;grid-template-columns:repeat(5,1fr);border:var(--rule) solid var(--ink);max-width:1200px}
 .trust .cell{padding:16px 20px;border-right:var(--rule) solid var(--ink)}
 .trust .cell:last-child{border-right:none}
 .trust .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(37,37,37,.55);display:block;margin-bottom:6px}
@@ -524,6 +528,11 @@ footer ul{list-style:none}
 /* ===== ПЛАНШЕТ 768–1023 ===== */
 @media (max-width:1023px){
   .page{grid-template-columns:56px 1fr}
+  /* пять ячеек доверия на планшете — 3+2, третья и пятая без правой линейки */
+  .trust{grid-template-columns:repeat(3,1fr)}
+  .trust .cell{border-bottom:var(--rule) solid var(--ink)}
+  .trust .cell:nth-child(3n),.trust .cell:last-child{border-right:none}
+  .trust .cell:nth-last-child(-n+2){border-bottom:none}
   .efir-inner{padding-left:16px}
   .efir-label{display:none}
   .efir a{gap:0}
@@ -623,7 +632,10 @@ footer ul{list-style:none}
   /* строки журнала на телефоне складываются: текст на всю ширину, действие под ним */
   .hs-row{flex-wrap:wrap;gap:6px 14px}
   .hs-txt{flex:1 1 100%;order:2}
-  .hs-act{order:3;white-space:normal}
+  /* палец: «Скачать программу» в hero и ссылка на Яндекс.Карты держат 44px, как всё нажимаемое
+     (аудит 17.08: были 25px и 16px — единственные цели ниже порога на 375) */
+  .hs-act{order:3;white-space:normal;min-height:44px;display:inline-flex;align-items:center}
+  .pr-note a{min-height:44px;display:inline-flex;align-items:center}
   /* на телефоне колонки схлопываются в поток: номер и цена в строку,
      курс и возраст под ними, действие последним */
   .price{grid-template-columns:24px 1fr;gap:6px 20px;padding:18px 0}
@@ -640,7 +652,10 @@ footer ul{list-style:none}
   .price:last-child,.review:last-child{border-bottom:none}
   /* minmax(0,…): без него неразрывное «Кубань 24» распирало страницу вправо на 390 */
   .trust{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .trust .cell{border-bottom:var(--rule) solid var(--ink)}
+  .trust .cell{border-bottom:var(--rule) solid var(--ink);border-right:var(--rule) solid var(--ink)}
+  .trust .cell:nth-child(2n),.trust .cell:last-child{border-right:none}
+  .trust .cell:nth-last-child(2){border-bottom:var(--rule) solid var(--ink)}
+  .trust .cell:last-child{grid-column:1/-1;border-bottom:none}
   .trust .cell:nth-child(2n){border-right:none}
   .trust .cell:nth-child(n+3){border-bottom:none}
   footer{padding:20px;grid-template-columns:1fr}
