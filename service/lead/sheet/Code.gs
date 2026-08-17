@@ -15,9 +15,36 @@
 
 var DEFAULT_SHEET_ID = '1AAQxYUh5ZmdFg0vpa26IFqnD-XOlCPIoOMQ-JkTA8SM';
 
+/* Тот же секрет, что выставлен воркеру (SHEET_TOKEN, 17.08.2026). Зашит константой, чтобы
+   разворачивание было одним действием: вставил код — задеплоил. Script Property TOKEN, если
+   его задать, перебивает эту константу. Секретность здесь условная: скрипт приватный, а сам
+   токен защищает не данные, а от посторонних записей в таблицу. Меняется в двух местах сразу:
+   здесь и `wrangler secret put SHEET_TOKEN`. */
+var DEFAULT_TOKEN = '287yb-RPCTHHH9qk0BEN_iy_0WnqU0NDAAYKknc2A7E';
+
 function props_() { return PropertiesService.getScriptProperties(); }
 
 function sheetId_() { return props_().getProperty('SHEET_ID') || DEFAULT_SHEET_ID; }
+
+function token_() { return props_().getProperty('TOKEN') || DEFAULT_TOKEN; }
+
+/* Разовая самопроверка ПЕРЕД боевым включением: запусти в редакторе Apps Script функцию
+   selftest() и посмотри лог. Она скажет, есть ли право записи, не трогая таблицу лишний раз:
+   пишет одну строку-пробу и тут же её удаляет. */
+function selftest() {
+  var ss = SpreadsheetApp.openById(sheetId_());
+  var sh = targetSheet_(ss);
+  var head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  Logger.log('Таблица: ' + ss.getName() + ' / лист: ' + sh.getName());
+  Logger.log('Колонки: ' + head.join(' · '));
+  Logger.log('Строк сейчас: ' + (sh.getLastRow() - 1));
+  var row = head.map(function (h) { return h === 'Name' ? 'ПРОБА ЗАПИСИ — удалить' : ''; });
+  sh.appendRow(row);
+  SpreadsheetApp.flush();
+  var n = sh.getLastRow();
+  sh.deleteRow(n);
+  Logger.log('ЗАПИСЬ РАБОТАЕТ: строка ' + n + ' добавлена и удалена. Можно деплоить.');
+}
 
 function out_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
@@ -68,7 +95,7 @@ function doPost(e) {
   try {
     var body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
 
-    var expected = props_().getProperty('TOKEN');
+    var expected = token_();
     if (!expected || body.token !== expected) return out_({ ok: false, error: 'token' });
     if (!body.parent_name || !body.phone) return out_({ ok: false, error: 'fields' });
 
