@@ -100,7 +100,19 @@
         if ((overW && hides(ox)) || (overH && hides(oy))) { clipper = n; break; }
         n = n.parentElement;
       }
-      if (clipper) {
+      /* Бегущая строка тоже режет по краю, но содержимое едет мимо глаза — человек
+         дочитывает всё, просто не сразу. Спрашиваем не «шире ли контейнера», а
+         «доедет ли текст до читателя»: если внутри режущего узла что-то анимировано,
+         это лента, а не потеря. Лента отзывов (revscroll 93s) поднимала тревогу на
+         обоих брейкпоинтах — пятый ложный положительный того же класса. */
+      var moving = clipper && getComputedStyle(clipper).animationName !== 'none';
+      if (clipper && !moving) {
+        var kids = clipper.querySelectorAll('*');
+        for (var ki = 0; ki < kids.length && !moving; ki++) {
+          if (getComputedStyle(kids[ki]).animationName !== 'none') moving = true;
+        }
+      }
+      if (clipper && !moving) {
         out.clipped.push({
           el: path(el), by: path(clipper),
           w: el.scrollWidth + '>' + el.clientWidth,
