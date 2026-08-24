@@ -395,7 +395,7 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 .pr-note{font-size:14px;margin-top:12px;max-width:980px}
 
 /* ===== ДОВЕРИЕ + ОТЗЫВЫ ===== */
-.trust{display:grid;grid-template-columns:repeat(5,1fr);border:var(--rule) solid var(--ink);max-width:1200px}
+.trust{display:grid;grid-template-columns:repeat(4,1fr);border:var(--rule) solid var(--ink);max-width:1200px}
 .trust .cell{padding:16px 20px;border-right:var(--rule) solid var(--ink)}
 .trust .cell:last-child{border-right:none}
 .trust .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(37,37,37,.55);display:block;margin-bottom:6px}
@@ -529,9 +529,10 @@ footer ul{list-style:none}
 @media (max-width:1023px){
   .page{grid-template-columns:56px 1fr}
   /* пять ячеек доверия на планшете — 3+2, третья и пятая без правой линейки */
-  .trust{grid-template-columns:repeat(3,1fr)}
+  /* сетка 2×2: с 22.08 фактов четыре, ряды «3+2» под пять ячеек больше не сходятся */
+  .trust{grid-template-columns:repeat(2,1fr)}
   .trust .cell{border-bottom:var(--rule) solid var(--ink)}
-  .trust .cell:nth-child(3n),.trust .cell:last-child{border-right:none}
+  .trust .cell:nth-child(2n),.trust .cell:last-child{border-right:none}
   .trust .cell:nth-last-child(-n+2){border-bottom:none}
   .efir-inner{padding-left:16px}
   .efir-label{display:none}
@@ -650,14 +651,17 @@ footer ul{list-style:none}
   .c-actions .btn-outline{text-align:center}
   .price,.review{border-right:none;border-bottom:var(--rule) solid var(--ink)}
   .price:last-child,.review:last-child{border-bottom:none}
-  /* minmax(0,…): без него неразрывное «Кубань 24» распирало страницу вправо на 390 */
-  .trust{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .trust .cell{border-bottom:var(--rule) solid var(--ink);border-right:var(--rule) solid var(--ink)}
-  .trust .cell:nth-child(2n),.trust .cell:last-child{border-right:none}
-  .trust .cell:nth-last-child(2){border-bottom:var(--rule) solid var(--ink)}
-  .trust .cell:last-child{grid-column:1/-1;border-bottom:none}
-  .trust .cell:nth-child(2n){border-right:none}
-  .trust .cell:nth-child(n+3){border-bottom:none}
+  /* На телефоне факты идут одной колонкой. Причина замерена: в 2×2 ячейка ~187px,
+     а неразрывное «~3000 ВЫПУСКНИКОВ» просит ~200px и вылезало за рамку вправо.
+     До 22.08 эту ячейку спасал grid-column:1/-1 у пятой (последней) — фактов стало
+     четыре, приём перестал работать. Одна колонка даёт 295px чистой ширины: строка
+     помещается целиком, .nowrap сохраняется, разлиновка не зависит от числа ячеек. */
+  .trust{grid-template-columns:minmax(0,1fr)}
+  /* :not(:last-child) — не украшение, а вес: планшетное .cell:nth-last-child(-n+2)
+     специфичнее простого .cell и иначе съедает линейку между третьей и четвёртой */
+  .trust .cell{border-right:none}
+  .trust .cell:not(:last-child){border-bottom:var(--rule) solid var(--ink)}
+  .trust .cell:last-child{border-bottom:none}
   footer{padding:20px;grid-template-columns:1fr}
   .row{grid-template-columns:1fr;gap:4px}
   .price .slots{white-space:normal}
