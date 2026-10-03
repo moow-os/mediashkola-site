@@ -45,6 +45,22 @@ async function snapshot(page) {
     await page.getByRole('button',{name:'Запустить '+label,exact:true}).click();
     await page.waitForTimeout(300);b=await snapshot(page);assert.equal(b[i].state,'running');
    }
+   // Seek only for this structural clone-click fixture; natural cycles use a fresh context.
+   await page.locator('.hero-portraits').scrollIntoViewIfNeeded();
+   await page.locator('.photo-track').evaluate(track=>{
+    const a=track.getAnimations()[0];a.pause();a.currentTime=a.effect.getTiming().duration-500;
+   });
+   const copy=page.locator('.photo-track .motion-group[aria-hidden="true"] [data-photo]').first();
+   await copy.click({force:true});
+   await page.locator('#photo-dialog').waitFor({state:'visible'});
+   await page.locator('.photo-close').click();
+   await page.waitForFunction(()=>document.activeElement===document.querySelector('.hero-portraits figcaption a[href="#gallery"]'));
+   assert.equal(await page.evaluate(()=>!!document.activeElement.closest('[aria-hidden="true"]')),false);
+   await page.locator('.photo-track').evaluate(track=>track.getAnimations()[0].play());
+   const gridPhoto=page.locator('.gallery-grid .portrait').last();
+   await gridPhoto.click();await page.locator('#photo-dialog').waitFor({state:'visible'});
+   await page.locator('.photo-close').click();
+   await page.waitForFunction(()=>document.activeElement===document.querySelector('.gallery-grid .portrait:last-child'));
    await page.locator('.hero-portraits').scrollIntoViewIfNeeded();
    await page.screenshot({path:path.join(out,'photos-'+width+'.jpg')});
    await page.locator('.rev-marquee').scrollIntoViewIfNeeded();
