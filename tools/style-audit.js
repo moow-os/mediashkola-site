@@ -1,9 +1,9 @@
 /* Геном-аудит сайта МШ. Меряет по вычисленным стилям живого DOM, а не по исходникам.
    Запуск: browse eval tools/style-audit.js (на любом брейкпоинте).
-   Проверяет: riso-правило (фуксия только на интерактиве), контраст AA с учётом кегля,
+   Проверяет: цветовые роли (действия и шапка курса), контраст AA с учётом кегля,
    радиусы (должны быть 0), тени (только плоский офсет), посторонние цвета вне палитры. */
 (function () {
-  var TOK = { bg: [253, 253, 253], ink: [37, 37, 37], accent: [225, 63, 138], white: [255, 255, 255] };
+  var TOK = { bg: [253, 253, 253], ink: [37, 37, 37], accent: [225, 63, 138], white: [255, 255, 255], action: [165, 29, 93], paperPink: [251, 230, 239], muted: [103, 84, 93] };
   function parse(c) {
     var m = /rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/.exec(c || '');
     return m ? { r: +m[1], g: +m[2], b: +m[3], a: m[4] === undefined ? 1 : +m[4] } : null;
@@ -15,14 +15,18 @@
     return 0.2126 * f(p.r) + 0.7152 * f(p.g) + 0.0722 * f(p.b);
   }
   function ratio(a, b) { var l1 = lum(a), l2 = lum(b); return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); }
+  function blend(fg, bg) {
+    return { r: fg.r * fg.a + bg.r * (1 - fg.a), g: fg.g * fg.a + bg.g * (1 - fg.a), b: fg.b * fg.a + bg.b * (1 - fg.a), a: 1 };
+  }
   function effBg(el) {
-    var n = el;
-    while (n && n !== document.documentElement) {
+    var layers = [], n = el, bg = { r: 253, g: 253, b: 253, a: 1 };
+    while (n) {
       var p = parse(getComputedStyle(n).backgroundColor);
-      if (p && p.a > 0.95) return p;
+      if (p) layers.unshift(p);
       n = n.parentElement;
     }
-    return { r: 253, g: 253, b: 253, a: 1 };
+    layers.forEach(function (p) { bg = blend(p, bg); });
+    return bg;
   }
   function interactive(el) {
     if (el.closest('a,button,input,select,textarea,summary,label,[role="button"],[tabindex]:not([tabindex="-1"])')) return true;
@@ -44,13 +48,13 @@
       if (prop === 'borderTopColor' && cs.borderTopWidth === '0px') return;
       if (prop === 'borderLeftColor' && cs.borderLeftWidth === '0px') return;
       if (prop === 'outlineColor' && (cs.outlineStyle === 'none' || cs.outlineWidth === '0px')) return;
-      if (!interactive(el)) out.riso_violations.push({ el: path(el), prop: prop });
+      if (!interactive(el) && !el.closest('.course-heading,.scroll-progress')) out.riso_violations.push({ el: path(el), prop: prop });
     });
     if (hasText) {
       var fg = parse(cs.color), bg = effBg(el);
-      if (fg && fg.a > 0.5) {
+      if (fg && fg.a > 0) {
         var size = parseFloat(cs.fontSize), bold = (+cs.fontWeight >= 700);
-        var need = (size >= 24 || (bold && size >= 18.66)) ? 3.0 : 4.5, r = ratio(fg, bg);
+        var need = (size >= 24 || (bold && size >= 18.66)) ? 3.0 : 4.5, r = ratio(blend(fg, bg), bg);
         if (r < need) out.contrast_fails.push({ el: path(el), ratio: +r.toFixed(2), need: need, size: size, text: (el.textContent || '').trim().slice(0, 32) });
       }
     }
@@ -66,7 +70,7 @@
     ['color', 'backgroundColor'].forEach(function (prop) {
       var p = parse(cs[prop]);
       if (!p || p.a < 0.05) return;
-      var known = near(p, TOK.bg, 3) || near(p, TOK.ink, 3) || near(p, TOK.accent, 6) || near(p, TOK.white, 3);
+      var known = near(p, TOK.bg, 3) || near(p, TOK.ink, 3) || near(p, TOK.accent, 6) || near(p, TOK.white, 3) || near(p, TOK.action, 3) || near(p, TOK.paperPink, 3) || near(p, TOK.muted, 3);
       var grayish = Math.abs(p.r - p.g) <= 4 && Math.abs(p.g - p.b) <= 4;
       if (!known && !grayish) {
         var k = 'rgb(' + p.r + ',' + p.g + ',' + p.b + ')';
