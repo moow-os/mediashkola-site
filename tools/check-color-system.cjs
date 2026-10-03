@@ -64,7 +64,7 @@ for(const file of ['index.html','kurs.html']) {
    }
    if(file==='index.html') {
     const colors=await page.locator('.course-heading').evaluateAll(es=>es.map(e=>getComputedStyle(e).backgroundColor));
-    assert.equal(new Set(colors).size,2,'Course headings need distinct visual hierarchy');
+    assert.equal(new Set(colors).size,1,'Equal-value courses share their resting visual hierarchy');
     assert.equal(await page.locator('.gallery-grid .portrait').count(),18);
     for(const el of await page.locator('.c-actions a[href="#lead-form"]').all()) {
      const c=await el.evaluate(e=>({bg:getComputedStyle(e).backgroundColor,fg:getComputedStyle(e).color}));

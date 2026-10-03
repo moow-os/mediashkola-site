@@ -708,14 +708,14 @@ footer ul{list-style:none}
 .hs-lead{background:var(--paper-pink);padding:14px 16px;border-bottom:0}
 .months button[aria-pressed="true"]{background:var(--action);color:var(--bg)}
 
-/* Два самостоятельных плаката курса, затем общий спокойный список результатов. */
+/* Равноценные курсы: общая бумага и небольшие акценты; цвет проявляется при внимании. */
 .courses{border:0;gap:24px;align-items:stretch}
-.course,.course:last-child{border:var(--rule) solid var(--ink);padding:24px}
-.course-media{background:var(--paper-pink)}
-.course-heading{margin:-24px -24px 24px;padding:24px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between;gap:20px;background:var(--accent);color:var(--bg);border-bottom:var(--rule) solid var(--ink)}
-.course-orator .course-heading{background:var(--ink)}
+.course,.course:last-child{border:var(--rule) solid var(--ink);padding:24px;background:var(--bg)}
+.course-heading{margin:-24px -24px 24px;padding:24px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between;gap:20px;background:var(--bg);color:var(--ink);border-top:4px solid var(--accent);border-bottom:var(--rule) solid var(--ink);transition:background-color .2s ease,color .2s ease}
+@media(hover:hover) and (pointer:fine){.course:hover .course-heading{background:var(--accent);color:var(--bg)}}
+.course:has(:focus-visible) .course-heading{background:var(--accent);color:var(--bg);transition:none}
 .course h3{font-size:clamp(32px,3.3vw,48px);line-height:1.12}
-.course-heading .c-age{align-self:flex-start;margin:0;padding:5px 10px;font:13px var(--mono);background:var(--bg);color:var(--ink)}
+.course-heading .c-age{align-self:flex-start;margin:0;padding:5px 10px;font:13px var(--mono);background:var(--paper-pink);color:var(--ink)}
 .course .c-who{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--action)}
 .c-actions .btn-outline[href="#lead-form"],.price .btn-outline{background:var(--action);color:var(--bg);border-color:var(--action)}
 .c-actions .btn-outline[download]{border:0;padding:10px 0;text-align:left;text-decoration:underline;text-underline-offset:5px;letter-spacing:.03em}
