@@ -16,13 +16,14 @@ async function snapshot(page) {
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_BINARY});
  try {
   for (const preference of ['no-preference','reduce']) for (const width of [320,390,1280]) {
-   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'no-preference'});
+   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:preference});
    await context.route('**/*',route=>{
     if(route.request().method()!=='GET'){result.postAttempts++;return route.abort();}
     return new URL(route.request().url()).origin===new URL(base).origin?route.continue():route.abort();
    });
    const page=await context.newPage();page.on('pageerror',e=>result.errors.push(e.message));
    await page.goto(base);await page.evaluate(()=>document.fonts.ready);
+   assert.equal(await page.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches),preference==='reduce');
    await page.locator('.photo-track img').evaluateAll(imgs=>Promise.all(imgs.map(i=>i.decode())));
    let a=await snapshot(page);await page.waitForTimeout(1100);let b=await snapshot(page);
    assert.deepEqual(b.map(x=>x.count),[18,9]);
