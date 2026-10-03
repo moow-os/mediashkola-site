@@ -42,6 +42,10 @@ for(const file of ['index.html','kurs.html']) {
    assert(fixture.contrast_fails.some(x=>x.el==='div#contrast-fixture'),'Audit must catch translucent small text');
    await page.locator('#contrast-fixture').evaluate(e=>e.remove());
    const team=page.locator('.team');
+   for(const shot of await team.locator('.tm-shot').all()) {
+    assert.equal(await shot.evaluate(e=>getComputedStyle(e,'::before').content),'none','Teacher portraits have no decorative tape at the top');
+    assert.equal(await shot.locator('.tm-name').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(165, 29, 93)','Teacher names retain their lower color accent');
+   }
    if(width<768) {
     const geometry=await team.evaluate(e=>({wrap:getComputedStyle(e).flexWrap,scroll:e.scrollWidth,client:e.clientWidth,card:e.firstElementChild.getBoundingClientRect().width}));
     assert.equal(geometry.wrap,'nowrap');assert(geometry.scroll>geometry.client);assert(geometry.card>geometry.client/2);
