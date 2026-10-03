@@ -58,6 +58,12 @@
       show(current + (event.key === 'ArrowRight' ? 1 : -1));
     }
   });
-  dialog.addEventListener('close', function () { if (opener && opener.isConnected) opener.focus(); });
+  dialog.addEventListener('close', function () {
+    if (!opener || !opener.isConnected) return;
+    // Moving photos can leave the viewport; return to the stable gallery link.
+    var hero = opener.closest('.hero-portraits');
+    var target = hero ? hero.querySelector('figcaption a[href="#gallery"]') : opener;
+    if (target) target.focus({ preventScroll: true });
+  });
 
 })();

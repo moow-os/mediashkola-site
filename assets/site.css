@@ -407,12 +407,9 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
    Дорожка содержит два одинаковых набора карточек и едет ровно на половину своей
    ширины: в момент возврата второй набор стоит там же, где стоял первый, поэтому
    шва не видно. Ведёт себя как плёнка: жёсткие обрезы по краям, общие линейки,
-   никаких точек-пагинаций. Наведение и фокус останавливают ход. */
-.rev-marquee{margin-top:28px;overflow:hidden;border-top:var(--rule) solid var(--ink);border-bottom:var(--rule) solid var(--ink)}
-.rev-track{display:flex;align-items:stretch;width:max-content;animation:revscroll 64s linear infinite}
-.rev-copy{display:flex;align-items:stretch}
-.rev-marquee:hover .rev-track,.rev-marquee:focus-within .rev-track{animation-play-state:paused}
-@keyframes revscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+   никаких точек-пагинаций. Движением и паузой управляет motion-loops.js. */
+.rev-marquee{margin-top:28px;overflow-x:auto;border-top:var(--rule) solid var(--ink);border-bottom:var(--rule) solid var(--ink)}
+.rev-track{display:flex;align-items:stretch;width:max-content}
 /* подпись прижата к низу: у карточек общая высота, и без этого имена авторов
    висели на разной высоте — полоса рассыпалась вместо ровной линии слугов */
 .rev-track .review{flex:0 0 clamp(280px,24vw,360px);padding:22px 24px;border-right:var(--rule) solid var(--ink);border-bottom:none;display:flex;flex-direction:column}
@@ -697,8 +694,7 @@ footer ul{list-style:none}
   .hero h1 .type{max-width:max-content}
   .hero h1.play .caret{display:none} /* без анимации мигать нечему — тире не показываем */
   .ovl.open .photo .frame{opacity:1;transform:none}
-  /* лента не едет сама — читатель листает её сам, дубль убран, чтобы не было повторов */
+  /* без JS лента листается вручную; motion-loops.js даёт явную кнопку запуска */
   .rev-marquee{overflow-x:auto}
   .rev-track{animation:none}
-  .rev-copy{display:none}
 }
