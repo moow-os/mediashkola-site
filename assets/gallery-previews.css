@@ -48,3 +48,21 @@
 @media(max-width:900px){.hero-layout,.option-c .hero-layout{grid-template-columns:1fr}.option-a .hero-portraits{max-width:330px;margin:12px 0 0}.option-a .hero h1,.option-c .hero h1{font-size:clamp(50px,11vw,90px)}.hero-layout .hs-act{font-size:12px}.hero-layout .hs-txt{font-size:18px}.option-c .hero-portraits{max-width:500px}.option-c .hero-portraits .portrait:first-child{margin-top:40px}.option-b .gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.gallery-heading{align-items:start;flex-direction:column;gap:12px}}
 @media(max-width:540px){.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.option-b .hero-portraits{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:24px}.option-b .hero-portraits .portrait-number{display:none}.option-b .hero h1{font-size:clamp(52px,12vw,72px)}.option-b .gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.option-c .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 12px}.option-c .gallery-grid .portrait{grid-column:span 1}.option-c .gallery-grid .portrait:nth-child(6n+1){grid-column:span 2;width:78%}.option-c .gallery-grid .portrait:nth-child(6n+2){grid-column:span 1}.option-c .gallery-grid .portrait:nth-child(6n+4){margin-top:24px}.hero-portraits figcaption{font-size:9px}.photo-viewer>img{max-width:calc(100vw - 56px);height:min(72dvh,800px)}}
 @media(prefers-reduced-motion:reduce){.portrait img{transition:none}}
+
+/* Two identical groups share the same geometry, including the trailing gap.
+   WAAPI drives only transform; CSS reduced-motion still covers other animation.
+   These strips start paused for reduced motion unless the reader opts in. */
+.option-b .hero-portraits.has-motion{display:block}
+.motion-loop{overflow:hidden;min-width:0}
+.motion-track{display:flex;align-items:stretch;width:max-content;animation:none!important}
+.motion-group{display:flex;flex:none;align-items:stretch}
+.photo-track .motion-group{gap:8px;padding-right:8px}
+.option-b .photo-track .portrait{flex:0 0 var(--photo-width);width:var(--photo-width)}
+.motion-track .review:last-child{border-right:var(--rule) solid var(--ink)}
+.motion-toggle{min-height:44px;padding:8px 12px;border:1px solid var(--ink);font:11px var(--mono);text-transform:uppercase;white-space:nowrap;background:var(--bg);color:var(--ink)}
+.motion-toggle:hover{background:var(--ink);color:var(--bg)}
+.motion-toggle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.hero-portraits.has-motion figcaption{align-items:center;flex-wrap:wrap}
+.motion-tools{display:flex;justify-content:flex-end;margin-top:28px}
+.motion-tools+.rev-marquee{margin-top:8px}
+@media(prefers-reduced-motion:reduce){.rev-marquee.motion-loop{overflow:hidden}}

@@ -30,7 +30,7 @@ fs.mkdirSync(out, { recursive: true });
       });
       assert.equal(await page.locator('body.option-b').count(), 1);
       assert.equal(await page.locator('.portrait-number').count(), 0);
-      assert.equal(await page.locator('.hero-portraits .portrait').count(), 4);
+      assert.equal(await page.locator('.photo-track .motion-group').first().locator('.portrait').count(), 18);
       assert.equal(await page.locator('.gallery-grid .portrait').count(), 18);
       assert.deepEqual(await page.locator('.months button').evaluateAll(n => n.map(x => x.dataset.m)), ['10','11','12']);
       assert(!/СЕЗОН СТАРТУЕТ 6 СЕНТЯБРЯ/i.test(await page.locator('body').innerText()));

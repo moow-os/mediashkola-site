@@ -21,8 +21,8 @@
 <meta property="og:image:alt" content="Логотип Медиашколы: сезон 26/27">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/brand/logo.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css">
-<link rel="stylesheet" href="assets/gallery-previews.css">
+<link rel="stylesheet" href="assets/site.css?v=20261003-motion1">
+<link rel="stylesheet" href="assets/gallery-previews.css?v=20261003-motion1">
 </head>
 <body class="gallery-option option-b">
 <a class="skip-link" href="#calendar">К расписанию</a>
@@ -237,7 +237,7 @@
       <!-- Лента отзывов. Источник: DEV/data/reviews-yandex-2026-08-14.json — 87 отзывов
            Яндекс.Карт, снятых актором Apify 14.08. Здесь девять отобранных: цитаты
            дословные, сокращения помечены многоточием, имена и даты как в источнике.
-           Вторую половину дорожки (для бесшовного шва) клонирует site.js и помечает
+           Вторую половину дорожки (для бесшовного шва) клонирует motion-loops.js и помечает
            aria-hidden, чтобы скринридер не читал одно и то же дважды. -->
       <div class="rev-marquee" role="region" aria-label="Отзывы родителей и учеников с Яндекс.Карт">
         <div class="rev-track">
@@ -903,8 +903,9 @@ window.CAL = {
  "note": "месяц финала = воскресенье-событие; 26.12.2026 — суббота (финал сезона) Синхронизировано с window.CAL из index.html 24.08.2026 (страница рендерит инлайн; этот файл — его зеркало)."
 };
 </script>
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=20261003-motion1"></script>
 <dialog id="photo-dialog" class="photo-dialog" aria-label="Просмотр фотографий"><div class="photo-viewer"><button class="photo-close" aria-label="Закрыть фотографию">×</button><img id="photo-full" alt=""><div class="photo-controls"><button id="photo-prev" aria-label="Предыдущая фотография">←</button><span id="photo-count" aria-live="polite"></span><button id="photo-next" aria-label="Следующая фотография">→</button></div></div></dialog>
-<script src="assets/gallery-previews.js"></script>
+<script src="assets/motion-loops.js?v=20261003-motion1"></script>
+<script src="assets/gallery-previews.js?v=20261003-motion1"></script>
 </body>
 </html>

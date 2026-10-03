@@ -58,6 +58,6 @@
       show(current + (event.key === 'ArrowRight' ? 1 : -1));
     }
   });
-  dialog.addEventListener('close', function () { if (opener && opener.isConnected) opener.focus(); });
+  dialog.addEventListener('close', function () { if (opener && opener.isConnected) opener.focus({ preventScroll: true }); });
 
 })();
