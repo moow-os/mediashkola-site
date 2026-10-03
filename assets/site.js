@@ -81,7 +81,7 @@
   if (!calRoot || !window.CAL) return;
 
   var CAL = window.CAL;
-  var MONTH_NAMES = { 9: 'Сентябрь', 10: 'Октябрь', 11: 'Ноябрь', 12: 'Декабрь' };
+  var MONTH_NAMES = { 10: 'Октябрь', 11: 'Ноябрь', 12: 'Декабрь' };
   var WD = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
   var NB = '‑'; /* неразрывный дефис — «13‑16» не рвётся (ревизия 1) */
   var lessons = {}; CAL.weekly_lessons.dates.forEach(function (d) { lessons[d] = true; });
@@ -89,7 +89,7 @@
   var finals = {}; CAL.month_finals.forEach(function (f) { finals[f.date] = f; });
   /* съёмочные дни ТВ-проекта — правка Кати 14.08: идут по будням, наравне с событиями */
   var shoots = {}; (CAL.tv_shoots || []).forEach(function (t) { shoots[t.date] = t; });
-  var curMonth = 9, showEv = true, showLs = true, showTv = true;
+  var curMonth = 10, showEv = true, showLs = true, showTv = true;
 
   function dstr(y, m, d) { return y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0'); }
   var n = new Date();
