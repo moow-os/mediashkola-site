@@ -61,7 +61,10 @@ fs.mkdirSync(out, { recursive: true });
         assert.equal(r.status(),200); assert((await r.body()).subarray(0,5).equals(Buffer.from('%PDF-')));
       }
       await page.goto(new URL('kurs.html',base).href);
-      await page.locator('header.top a.wordmark').click();
+      await Promise.all([
+        page.waitForURL(new URL('index.html', base).href, { waitUntil: 'domcontentloaded' }),
+        page.locator('header.top a.wordmark').click()
+      ]);
       assert.equal(new URL(page.url()).pathname, new URL('index.html',base).pathname);
       assert.equal(await page.locator('body.option-b').count(),1);
       await page.emulateMedia({ reducedMotion: 'reduce' });
