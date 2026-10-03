@@ -1,11 +1,10 @@
-/* Continuous, equal-width film strips. A user choice overrides reduced motion
-   only for this site in the current tab session; no global preference changes. */
+/* Continuous, equal-width film strips. Both start automatically on every visit;
+   no controls, saved pause, hover or system preference can stop these timelines. */
 (function () {
   'use strict';
   if (!Element.prototype.animate) return;
-  var preference = matchMedia('(prefers-reduced-motion: reduce)');
 
-  function loop(viewport, track, cards, controls, key, label, speed, sizeCards) {
+  function loop(viewport, track, cards, key, speed, sizeCards) {
     var group = document.createElement('div');
     group.className = 'motion-group';
     cards.forEach(function (card) { group.appendChild(card); });
@@ -17,22 +16,8 @@
     viewport.classList.add('motion-loop');
     viewport.dataset.loop = key;
     track.classList.add('motion-track');
-    var button = document.createElement('button');
-    button.type = 'button'; button.className = 'motion-toggle';
-    controls.appendChild(button);
-    var choice = null, animation = null, distance = 0;
-    try {
-      var saved = sessionStorage.getItem('msh-motion-' + key);
-      if (saved === 'play' || saved === 'pause') choice = saved === 'play';
-    } catch (_) { /* Storage is optional. */ }
-    function playing() { return choice === null ? !preference.matches : choice; }
-    function sync() {
-      var run = playing();
-      viewport.dataset.playing = String(run);
-      button.textContent = run ? 'Ⅱ Пауза' : '▶ Запустить';
-      button.setAttribute('aria-label', (run ? 'Приостановить ' : 'Запустить ') + label);
-      if (animation) { if (run) animation.play(); else animation.pause(); }
-    }
+    viewport.dataset.playing = 'true';
+    var animation = null, distance = 0;
     function measure() {
       if (sizeCards) sizeCards(viewport);
       var width = group.getBoundingClientRect().width;
@@ -45,15 +30,7 @@
         { transform: 'translate3d(' + (-width) + 'px,0,0)' }
       ], { duration: width / speed * 1000, iterations: Infinity, easing: 'linear' });
       animation.currentTime = fraction * width / speed * 1000;
-      sync();
     }
-    button.addEventListener('click', function () {
-      choice = !playing();
-      try { sessionStorage.setItem('msh-motion-' + key, choice ? 'play' : 'pause'); } catch (_) {}
-      sync();
-    });
-    if (preference.addEventListener) preference.addEventListener('change', sync);
-    else preference.addListener(sync);
     measure();
     if (window.ResizeObserver) new ResizeObserver(measure).observe(viewport);
     else window.addEventListener('resize', measure, { passive: true });
@@ -80,7 +57,7 @@
     viewport.className = 'photo-strip'; track.className = 'photo-track';
     viewport.appendChild(track); hero.insertBefore(viewport, caption);
     hero.classList.add('has-motion');
-    loop(viewport, track, cards, caption, 'photos', 'фотоленту', 30, function (view) {
+    loop(viewport, track, cards, 'photos', 30, function (view) {
       view.style.setProperty('--photo-width', ((view.clientWidth - 24) / 4) + 'px');
     });
   }
@@ -88,8 +65,6 @@
   if (reviews) {
     var reviewTrack = reviews.querySelector('.rev-track');
     var reviewCards = Array.prototype.slice.call(reviewTrack.querySelectorAll(':scope > .review'));
-    var controls = document.createElement('div'); controls.className = 'motion-tools';
-    reviews.before(controls);
-    loop(reviews, reviewTrack, reviewCards, controls, 'reviews', 'ленту отзывов', 27);
+    loop(reviews, reviewTrack, reviewCards, 'reviews', 27);
   }
 })();
