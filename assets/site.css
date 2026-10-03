@@ -440,8 +440,6 @@ table.grid{width:100%;border-collapse:collapse;table-layout:fixed}
 /* ксерокс-зерно — только внутри фотографии, фон остаётся стерильным */
 .tm-shot::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.3;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.55'/></svg>")}
-/* скотч, который держит кадр */
-.tm-shot::before{content:'';position:absolute;z-index:2;top:-9px;left:14px;width:74px;height:22px;background:rgba(37,37,37,.82);transform:rotate(-6deg)}
 .tm-name{position:absolute;z-index:3;left:0;right:0;bottom:0;background:var(--ink);color:#fff;font-family:var(--display);font-weight:700;font-size:19px;line-height:1.15;text-transform:uppercase;padding:9px 12px}
 .tm-role{font-size:13px;line-height:1.35;text-transform:uppercase;letter-spacing:.06em;padding:10px 2px 0;color:rgba(37,37,37,.78)}
 /* ракорд вместо ещё не снятого портрета */
@@ -738,7 +736,6 @@ footer ul{list-style:none}
 
 /* Цвет подписей связывает живые лица с брендом, без изменения самих фотографий. */
 .tm-name{background:var(--action)}
-.tm-shot::before{background:var(--accent)}
 #gallery{background:var(--ink);color:var(--bg)}
 #gallery .kicker,#gallery .gallery-heading>p{color:var(--paper-pink)}
 #gallery .portrait:focus-visible{outline-color:var(--bg)}
