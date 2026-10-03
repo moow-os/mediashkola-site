@@ -13,13 +13,6 @@
     measureType();
     document.fonts.ready.then(measureType);
     window.addEventListener('resize', measureType, { passive: true });
-    /* The site's initial motion choice must also follow a later preference
-       change. Otherwise a page opened with reduced motion loses its second
-       line when motion is enabled without reloading. */
-    var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    function syncMotion() { typed.closest('h1').classList.toggle('play', !motion.matches); }
-    if (motion.addEventListener) motion.addEventListener('change', syncMotion);
-    else motion.addListener(syncMotion);
   }
   /* The existing navigation closes on click; keep its accessible state in sync. */
   var menuButton = document.querySelector('.menu-btn');

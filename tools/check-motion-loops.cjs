@@ -15,7 +15,7 @@ async function snapshot(page) {
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_BINARY});
  try {
-  for (const width of [320,390,1280]) {
+  for (const preference of ['no-preference','reduce']) for (const width of [320,390,1280]) {
    const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'no-preference'});
    await context.route('**/*',route=>{
     if(route.request().method()!=='GET'){result.postAttempts++;return route.abort();}
@@ -35,15 +35,11 @@ async function snapshot(page) {
    assert.equal(await page.locator('.portrait-number').count(),0);
    assert.equal(await page.locator('.gallery-grid .portrait').count(),18);
    assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)));
-   for(const [key,label] of [['photos','фотоленту'],['reviews','ленту отзывов']]){
+   assert.equal(await page.locator('.motion-toggle,.motion-tools').count(),0,'No start/pause controls');
+   for(const key of ['photos','reviews']) {
     const root=page.locator('[data-loop="'+key+'"]');await root.hover();
     a=await snapshot(page);await page.waitForTimeout(350);b=await snapshot(page);
     const i=key==='photos'?0:1;assert(b[i].time>a[i].time+200,'Hover must not stop autoplay');
-    await page.getByRole('button',{name:'Приостановить '+label,exact:true}).click();
-    await page.waitForTimeout(70);a=await snapshot(page);await page.waitForTimeout(300);b=await snapshot(page);
-    assert(Math.abs(a[i].x-b[i].x)<0.1,'Explicit pause must hold position');
-    await page.getByRole('button',{name:'Запустить '+label,exact:true}).click();
-    await page.waitForTimeout(300);b=await snapshot(page);assert.equal(b[i].state,'running');
    }
    // Seek only for this structural clone-click fixture; natural cycles use a fresh context.
    await page.locator('.hero-portraits').scrollIntoViewIfNeeded();
@@ -62,23 +58,21 @@ async function snapshot(page) {
    await page.locator('.photo-close').click();
    await page.waitForFunction(()=>document.activeElement===document.querySelector('.gallery-grid .portrait:last-child'));
    await page.locator('.hero-portraits').scrollIntoViewIfNeeded();
-   await page.screenshot({path:path.join(out,'photos-'+width+'.jpg')});
+   await page.screenshot({path:path.join(out,'photos-'+preference+'-'+width+'.jpg')});
    await page.locator('.rev-marquee').scrollIntoViewIfNeeded();
-   await page.screenshot({path:path.join(out,'reviews-'+width+'.jpg')});
+   await page.screenshot({path:path.join(out,'reviews-'+preference+'-'+width+'.jpg')});
    await page.setViewportSize({width:width+25,height:900});await page.waitForTimeout(100);
    b=await snapshot(page);for(const x of b)assert(Math.abs(x.width-x.copyWidth)<0.1);
-   result.views.push({width,status:'PASS',loops:b});await context.close();
+   await page.evaluate(()=>{sessionStorage.setItem('msh-motion-photos','pause');sessionStorage.setItem('msh-motion-reviews','pause');});
+   await page.reload();a=await snapshot(page);await page.waitForTimeout(300);b=await snapshot(page);
+   b.forEach((x,i)=>{assert.equal(x.state,'running');assert(x.time>a[i].time+100);});
+   await page.emulateMedia({reducedMotion:preference==='reduce'?'no-preference':'reduce'});
+   a=await snapshot(page);await page.waitForTimeout(300);b=await snapshot(page);
+   b.forEach((x,i)=>{assert.equal(x.state,'running');assert(x.time>a[i].time+100);});
+   result.views.push({width,preference,status:'PASS',noControls:true,oldPauseIgnored:true,mediaChangeKeepsRunning:true,loops:b});await context.close();
   }
-  const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'});
-  const page=await context.newPage();await page.goto(base);
-  let a=await snapshot(page);await page.waitForTimeout(500);let b=await snapshot(page);
-  b.forEach((x,i)=>{assert.equal(x.state,'paused');assert(Math.abs(x.x-a[i].x)<0.1);});
-  for(const label of ['фотоленту','ленту отзывов'])await page.getByRole('button',{name:'Запустить '+label,exact:true}).click();
-  await page.waitForTimeout(500);b=await snapshot(page);b.forEach(x=>assert.equal(x.state,'running'));
-  await page.reload();await page.waitForTimeout(300);b=await snapshot(page);b.forEach(x=>assert.equal(x.state,'running'));
-  result.reducedMotion='Default paused; explicit play works and survives reload in this tab';await context.close();
   if(mode==='cycles') {
-   const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'no-preference'});
+   const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'});
    const page=await context.newPage();await page.goto(base);await page.evaluate(()=>document.fonts.ready);
    await page.locator('.photo-track img').evaluateAll(imgs=>Promise.all(imgs.map(i=>i.decode())));
    await page.locator('.rev-marquee').scrollIntoViewIfNeeded();

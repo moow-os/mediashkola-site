@@ -3,7 +3,6 @@
    календарь (сетка/agenda, фильтры, месяцы, поповер). */
 (function () {
   'use strict';
-  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ===== Эфирная сетка: scroll-spy (ревизия 3: секция активна в центре вьюпорта) ===== */
   var spyLinks = Array.prototype.slice.call(document.querySelectorAll('.efir a[href^="#"]'));
@@ -74,7 +73,7 @@
 
   /* ===== Hero: зачёркивание + допечатка (один раз, ≤2с) ===== */
   var h1 = document.querySelector('.hero h1[data-animate]');
-  if (h1 && !REDUCED) requestAnimationFrame(function () { h1.classList.add('play'); });
+  if (h1) requestAnimationFrame(function () { h1.classList.add('play'); });
 
   /* ===== Календарь ===== */
   var calRoot = document.getElementById('grid-body');

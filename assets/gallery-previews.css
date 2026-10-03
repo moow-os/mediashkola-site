@@ -50,8 +50,7 @@
 @media(prefers-reduced-motion:reduce){.portrait img{transition:none}}
 
 /* Two identical groups share the same geometry, including the trailing gap.
-   WAAPI drives only transform; CSS reduced-motion still covers other animation.
-   These strips start paused for reduced motion unless the reader opts in. */
+   WAAPI drives only transform and autoplays without controls or preference gates. */
 .option-b .hero-portraits.has-motion{display:block}
 .motion-loop{overflow:hidden;min-width:0}
 .motion-track{display:flex;align-items:stretch;width:max-content;animation:none!important}
@@ -59,10 +58,6 @@
 .photo-track .motion-group{gap:8px;padding-right:8px}
 .option-b .photo-track .portrait{flex:0 0 var(--photo-width);width:var(--photo-width)}
 .motion-track .review:last-child{border-right:var(--rule) solid var(--ink)}
-.motion-toggle{min-height:44px;padding:8px 12px;border:1px solid var(--ink);font:11px var(--mono);text-transform:uppercase;white-space:nowrap;background:var(--bg);color:var(--ink)}
-.motion-toggle:hover{background:var(--ink);color:var(--bg)}
-.motion-toggle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .hero-portraits.has-motion figcaption{align-items:center;flex-wrap:wrap}
-.motion-tools{display:flex;justify-content:flex-end;margin-top:28px}
-.motion-tools+.rev-marquee{margin-top:8px}
 @media(prefers-reduced-motion:reduce){.rev-marquee.motion-loop{overflow:hidden}}
+@media(prefers-reduced-motion:reduce){.gallery-option .hero h1.play .type{animation-name:gallery-type!important}}
