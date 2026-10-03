@@ -68,7 +68,13 @@ fs.mkdirSync(out, { recursive: true });
       assert.equal(new URL(page.url()).pathname, new URL('index.html',base).pathname);
       assert.equal(await page.locator('body.option-b').count(),1);
       await page.emulateMedia({ reducedMotion: 'reduce' });
-      assert(await page.locator('.hero .type').isVisible());
+      // Returning to the homepage starts the authored opening again. Reduced
+      // motion no longer skips directly to its final state.
+      await page.waitForFunction(() => {
+        const t = document.querySelector('.hero .type');
+        const range = document.createRange(); range.selectNodeContents(t);
+        return t.getBoundingClientRect().width >= range.getBoundingClientRect().width - 1;
+      });
       result.views.push({ width, status: 'PASS', photos:18, photoBadges:0, nativeForm:true, courseReturn:true, naturalIntro:true, reducedMotion:true });
       await context.close();
     }
