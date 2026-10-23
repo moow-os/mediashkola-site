@@ -8,7 +8,8 @@
 <link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/site.css?v=20261003-teachers1">
 <link rel="stylesheet" href="../assets/camp.css?v=20261016-1">
-<script src="../assets/camp.js?v=20261020-1" defer></script>
+<script src="../assets/camp-transport.js?v=20261023-1" defer></script>
+<script src="../assets/camp.js?v=20261023-1" defer></script>
 </head>
 <body class="camp-page">
 <a class="skip-link" href="#programme">К программе лагеря</a>
@@ -136,11 +137,11 @@
   <section class="camp-signup" id="signup" aria-labelledby="signup-title">
     <div><h2 id="signup-title">Увидимся<br>в лагере?</h2><p>Оставьте телефон — свяжемся с вами,<br class="camp-desktop-break"> расскажем о смене и поможем записаться.</p><a class="camp-phone" href="tel:+79186997307">+7 918 699-73-07</a></div>
     <div>
-      <form id="camp-lead" data-consent-version="camp-callback-20261016-1" novalidate>
+      <form id="camp-lead" data-consent-version="camp-callback-20261023-2" data-buffer-endpoint="https://api.mediashkola.pro/camp-buffer/lead" novalidate>
         <label for="camp-phone">Ваш телефон</label><input id="camp-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="+7 ___ ___-__-__" required aria-describedby="camp-phone-error"><p class="camp-error" id="camp-phone-error" hidden>Укажите телефон: 11 цифр, начиная с 7 или 8.</p>
         <label for="camp-name">Как к вам обращаться <span>(необязательно)</span></label><input id="camp-name" name="parent_name" autocomplete="name" maxlength="120">
-        <label class="camp-consent" for="camp-agree"><input id="camp-agree" name="agree" type="checkbox" required aria-describedby="camp-agree-error"><span>Согласен на обработку указанных данных Медиашколой для связи по заявке и записи в лагерь.</span></label><p class="camp-error" id="camp-agree-error" hidden>Нужно согласие, чтобы мы могли принять заявку.</p>
-        <p><a href="./data.html">Как мы используем данные заявки</a></p>
+        <label class="camp-consent" for="camp-agree"><input id="camp-agree" name="agree" type="checkbox" required aria-describedby="camp-agree-error"><span>Согласен на обработку указанных данных Медиашколой для обратного звонка и записи в лагерь, передачу получателям школьного бота и временное хранение в Cloudflare вне РФ при недоступности основного сервера, как описано в информации о данных от 23 октября 2026 года.</span></label><p class="camp-error" id="camp-agree-error" hidden>Нужно согласие, чтобы мы могли принять заявку.</p>
+        <p><a href="./data-20261023-2.html">Как мы используем данные заявки</a></p>
         <div class="camp-trap" aria-hidden="true"><label for="camp-company">Организация</label><input id="camp-company" name="company" tabindex="-1" autocomplete="off"></div>
         <button class="camp-button" type="submit" disabled>Оставить телефон</button><p class="camp-form-status" id="camp-form-status" role="status" aria-live="polite"></p>
         <noscript><p>Для отправки формы нужен JavaScript. Можно позвонить: <a href="tel:+79186997307">+7 918 699-73-07</a>.</p></noscript>

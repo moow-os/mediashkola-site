@@ -9,7 +9,9 @@
   var status = document.getElementById('camp-form-status');
   var success = document.getElementById('camp-success');
   var pending = false;
-  var requestId = '', requestFingerprint = '';
+  var storage;
+  try { storage = window.localStorage; } catch (ignore) { /* Restricted browser storage. */ }
+  var requestIdentity = window.CampTransport.identity(storage, window.crypto);
   button.disabled = false;
   document.querySelectorAll('a[href="#signup"]').forEach(function (link) {
     link.addEventListener('click', function () { window.setTimeout(function () { phone.focus({ preventScroll: true }); }, 0); });
@@ -31,34 +33,26 @@
     pending = true;
     button.disabled = true;
     status.textContent = 'Отправляем заявку…';
-    var controller = new AbortController();
-    var timer = window.setTimeout(function () { controller.abort(); }, 20000);
     try {
       var name = document.getElementById('camp-name').value.replace(/\s+/g, ' ').trim().slice(0, 120);
       var version = form.getAttribute('data-consent-version');
-      var fingerprint = JSON.stringify([digits, name, version, window.location.origin + window.location.pathname]);
-      if (!requestId || fingerprint !== requestFingerprint) {
-        var random = new Uint8Array(16);
-        window.crypto.getRandomValues(random);
-        requestId = Array.from(random, function (value) { return value.toString(16).padStart(2, '0'); }).join('');
-        requestFingerprint = fingerprint;
-      }
-      var response = await fetch('https://desktop-sgneejc.tail1ef3a6.ts.net/lead', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'omit', signal: controller.signal,
-        body: JSON.stringify({ kind: 'camp', camp: 'mediaautumn-2026', request_id: requestId, phone: '+' + digits,
+      var application = { kind: 'camp', camp: 'mediaautumn-2026', phone: '+' + digits,
           parent_name: name, agree: agree.checked, consent_version: version,
           page: window.location.origin + window.location.pathname,
-          company: document.getElementById('camp-company').value })
+          company: document.getElementById('camp-company').value };
+      application.request_id = await requestIdentity(application);
+      await window.CampTransport.send(application, {
+        primary: 'https://desktop-sgneejc.tail1ef3a6.ts.net/lead',
+        // Release must supply only the qualified exact endpoint and data notice.
+        // The exact camp route is paired with the versioned data notice.
+        fallback: form.getAttribute('data-buffer-endpoint') || ''
       });
-      var body = await response.json();
-      if (!response.ok || body.ok !== true) throw new Error('Delivery not confirmed');
       form.hidden = true;
       success.hidden = false;
       success.focus();
     } catch (failure) {
       status.textContent = 'Не получили подтверждение отправки. Можно попробовать ещё раз или позвонить: +7 918 699-73-07.';
     } finally {
-      window.clearTimeout(timer);
       pending = false;
       button.disabled = false;
     }

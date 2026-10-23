@@ -4,6 +4,10 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const data = JSON.parse(fs.readFileSync(path.join(root, 'data/mediaautumn-2026.json'), 'utf8'));
 const consent = JSON.parse(fs.readFileSync(path.join(root, 'data/camp-consent-2026.json'), 'utf8'));
+const notice = fs.readFileSync(path.join(root, 'mediaosen-2026', consent.notice_path), 'utf8');
+if (!notice.includes(`name="data-notice-version" content="${consent.notice_version}"`)) {
+  throw new Error('Camp consent must point to its exact versioned data notice');
+}
 const escape = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 const dates = ['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30','2026-11-02','2026-11-03','2026-11-04'];
 if (JSON.stringify(data.days.map(day => day.date)) !== JSON.stringify(dates)) throw new Error('Camp dates differ from the approved programme');
@@ -23,7 +27,8 @@ const html = `<!doctype html>
 <link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/site.css?v=20261003-teachers1">
 <link rel="stylesheet" href="../assets/camp.css?v=20261016-1">
-<script src="../assets/camp.js?v=20261020-1" defer></script>
+<script src="../assets/camp-transport.js?v=20261023-1" defer></script>
+<script src="../assets/camp.js?v=20261023-1" defer></script>
 </head>
 <body class="camp-page">
 <a class="skip-link" href="#programme">К программе лагеря</a>
@@ -43,11 +48,11 @@ const html = `<!doctype html>
   <section class="camp-signup" id="signup" aria-labelledby="signup-title">
     <div><h2 id="signup-title">Увидимся<br>в лагере?</h2><p>Оставьте телефон — свяжемся с вами,<br class="camp-desktop-break"> расскажем о смене и поможем записаться.</p><a class="camp-phone" href="tel:${escape(data.phone)}">${escape(data.phone_display)}</a></div>
     <div>
-      <form id="camp-lead" data-consent-version="${escape(consent.version)}" novalidate>
+      <form id="camp-lead" data-consent-version="${escape(consent.version)}" data-buffer-endpoint="https://api.mediashkola.pro/camp-buffer/lead" novalidate>
         <label for="camp-phone">Ваш телефон</label><input id="camp-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="+7 ___ ___-__-__" required aria-describedby="camp-phone-error"><p class="camp-error" id="camp-phone-error" hidden>Укажите телефон: 11 цифр, начиная с 7 или 8.</p>
         <label for="camp-name">Как к вам обращаться <span>(необязательно)</span></label><input id="camp-name" name="parent_name" autocomplete="name" maxlength="120">
         <label class="camp-consent" for="camp-agree"><input id="camp-agree" name="agree" type="checkbox" required aria-describedby="camp-agree-error"><span>${escape(consent.text)}</span></label><p class="camp-error" id="camp-agree-error" hidden>Нужно согласие, чтобы мы могли принять заявку.</p>
-        <p><a href="./data.html">Как мы используем данные заявки</a></p>
+        <p><a href="./${escape(consent.notice_path)}">Как мы используем данные заявки</a></p>
         <div class="camp-trap" aria-hidden="true"><label for="camp-company">Организация</label><input id="camp-company" name="company" tabindex="-1" autocomplete="off"></div>
         <button class="camp-button" type="submit" disabled>Оставить телефон</button><p class="camp-form-status" id="camp-form-status" role="status" aria-live="polite"></p>
         <noscript><p>Для отправки формы нужен JavaScript. Можно позвонить: <a href="tel:${escape(data.phone)}">${escape(data.phone_display)}</a>.</p></noscript>
@@ -62,4 +67,5 @@ const html = `<!doctype html>
 const target = path.join(root, 'mediaosen-2026/index.html');
 fs.mkdirSync(path.dirname(target), { recursive: true });
 fs.writeFileSync(target, html);
+fs.writeFileSync(path.join(root, 'mediaosen-2026/data.html'), notice);
 console.log('Compiled 8 days / 85 events → mediaosen-2026/index.html');
