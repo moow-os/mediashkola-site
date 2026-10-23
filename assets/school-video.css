@@ -1,0 +1,9 @@
+/* Full portrait, native playback controls and no automatic video download. */
+.school-video{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,340px);gap:32px;align-items:center;background:var(--paper-pink)}
+.school-video-copy{min-width:0}
+.school-video h2{margin-bottom:18px}
+.school-video-copy>p:not(.kicker){margin:0 0 22px;font-size:18px}
+.school-video-copy>a{color:var(--ink);text-underline-offset:4px}
+.school-video video{display:block;width:100%;height:auto;max-height:640px;aspect-ratio:9/16;object-fit:contain;background:var(--ink);border:var(--rule) solid var(--ink)}
+.school-video video:focus-visible{outline:3px solid var(--ink);outline-offset:5px}
+@media(max-width:700px){.school-video{grid-template-columns:1fr;gap:22px}.school-video video{width:auto;max-width:100%;height:min(65svh,640px);justify-self:center}.school-video h2{font-size:clamp(36px,10vw,58px)}}
