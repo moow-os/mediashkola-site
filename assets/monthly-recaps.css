@@ -1,0 +1,17 @@
+/* Katya's option A: chronological rows, full frames, native video controls. */
+.monthly-recaps-note{max-width:620px;margin:16px 0 28px;color:var(--muted);font-size:15px}
+.monthly-recap{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,3fr);gap:32px;border-top:var(--rule) solid var(--ink);padding:28px 0}
+.monthly-recap:last-child{padding-bottom:0}
+.monthly-recap-heading{display:flex;align-items:flex-start;gap:12px;min-width:0}
+.monthly-recap-number{font:13px var(--mono);color:var(--muted);padding-top:6px}
+.monthly-recap h3{font-size:clamp(25px,2.3vw,34px);line-height:1.12;overflow-wrap:normal}
+.monthly-recap h3 span{display:block;margin-top:10px;font:13px var(--mono);letter-spacing:.12em}
+.monthly-recap-media{min-width:0}
+.monthly-recap video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;background:var(--ink);border:var(--rule) solid var(--ink)}
+.monthly-recap video:focus-visible,.monthly-recap-link:focus-visible{outline:3px solid var(--action);outline-offset:5px}
+.monthly-recap-link{display:inline-block;margin-top:12px;font-size:14px;text-underline-offset:4px}
+.monthly-recap-pending{display:flex;align-items:center;justify-content:center;gap:18px;min-height:200px;padding:28px;background:var(--paper-pink);text-align:center}
+.monthly-recap-pending>span{font-size:54px;line-height:1}
+.monthly-recap-pending p{max-width:260px;font:clamp(22px,2.4vw,32px)/1.15 var(--display);text-transform:uppercase}
+@media(max-width:900px){.monthly-recap{grid-template-columns:minmax(130px,1fr) minmax(0,2.3fr);gap:22px}}
+@media(max-width:700px){.monthly-recap{grid-template-columns:1fr;gap:18px;padding:24px 0}.monthly-recap h3{font-size:29px}.monthly-recap h3 span{display:inline-block;margin:0 0 0 8px;vertical-align:middle}.monthly-recap-pending{min-height:160px;padding:24px 18px}.monthly-recap-pending>span{font-size:42px}}

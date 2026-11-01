@@ -1,4 +1,4 @@
-/* Full portrait, native playback controls and no automatic video download. */
+/* Full portrait and native controls; viewport-video.js starts muted playback in view. */
 .school-video{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,340px);gap:32px;align-items:center;background:var(--paper-pink)}
 .school-video-copy{min-width:0}
 .school-video h2{margin-bottom:18px}

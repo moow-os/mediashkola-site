@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="assets/site.css?v=20261003-teachers1">
 <link rel="stylesheet" href="assets/gallery-previews.css?v=20261003-autoplay1">
 <link rel="stylesheet" href="assets/school-video.css?v=20261023-1">
+<link rel="stylesheet" href="assets/monthly-recaps.css?v=20261102-1">
 </head>
 <body class="gallery-option option-b">
 <a class="skip-link" href="#calendar">К расписанию</a>
@@ -96,10 +97,9 @@
     <section class="strip" id="calendar" aria-label="Календарь сезона">
       <p class="kicker">Расписание · сезон 26/27</p>
       <div class="cal-head">
-        <h2 id="cal-title">Октябрь 2026</h2>
+        <h2 id="cal-title">Ноябрь 2026</h2>
         <div class="months" role="group" aria-label="Выбор месяца">
-          <button data-m="10" aria-pressed="true">Окт</button>
-          <button data-m="11" aria-pressed="false">Ноя</button>
+          <button data-m="11" aria-pressed="true">Ноя</button>
           <button data-m="12" aria-pressed="false">Дек</button>
         </div>
       </div>
@@ -124,11 +124,61 @@
         <p>Медиашкола — за 31 секунду.</p>
         <a href="assets/videos/mediashkola-2026-10.mp4">Открыть видео отдельно ↗</a>
       </div>
-      <video id="school-film" controls playsinline preload="none" width="1080" height="1920"
+      <video id="school-film" controls muted playsinline preload="none" data-viewport-play width="1080" height="1920"
         poster="assets/videos/mediashkola-2026-10-poster.jpg" aria-label="Видеоролик Медиашколы, 31 секунда">
         <source src="assets/videos/mediashkola-2026-10.mp4" type="video/mp4">
         Ваш браузер не поддерживает встроенное видео. <a href="assets/videos/mediashkola-2026-10.mp4">Открыть ролик</a>.
       </video>
+    </section>
+
+    <section class="strip monthly-recaps" id="monthly-recaps" aria-labelledby="monthly-recaps-title">
+      <p class="kicker">Сезон 2026/27</p>
+      <h2 id="monthly-recaps-title">Итоги месяца</h2>
+      <p class="monthly-recaps-note">Видео запускается без звука, когда появляется на экране. Звук можно включить в плеере.</p>
+      <div class="monthly-recaps-list">
+        <article class="monthly-recap" aria-labelledby="recap-september-title">
+          <header class="monthly-recap-heading">
+            <span class="monthly-recap-number" aria-hidden="true">01</span>
+            <h3 id="recap-september-title">Итог сентября <span>2026</span></h3>
+          </header>
+          <div class="monthly-recap-media">
+            <video id="recap-september" controls muted playsinline preload="none" data-viewport-play width="1280" height="720"
+              poster="assets/videos/mediashkola-2026-09-recap-poster.jpg" aria-label="Итог сентября 2026, видео Медиашколы">
+              <source src="assets/videos/mediashkola-2026-09-recap.mp4" type="video/mp4">
+              Ваш браузер не поддерживает встроенное видео. <a href="assets/videos/mediashkola-2026-09-recap.mp4">Открыть итог сентября</a>.
+            </video>
+            <a class="monthly-recap-link" href="assets/videos/mediashkola-2026-09-recap.mp4">Открыть видео отдельно ↗</a>
+          </div>
+        </article>
+        <article class="monthly-recap" aria-labelledby="recap-october-title">
+          <header class="monthly-recap-heading">
+            <span class="monthly-recap-number" aria-hidden="true">02</span>
+            <h3 id="recap-october-title">Итог октября <span>2026</span></h3>
+          </header>
+          <div class="monthly-recap-media">
+            <video id="recap-october" controls muted playsinline preload="none" data-viewport-play width="1280" height="720"
+              poster="assets/videos/mediashkola-2026-10-recap-poster.jpg" aria-label="Итог октября 2026, видео Медиашколы">
+              <source src="assets/videos/mediashkola-2026-10-recap.mp4" type="video/mp4">
+              Ваш браузер не поддерживает встроенное видео. <a href="assets/videos/mediashkola-2026-10-recap.mp4">Открыть итог октября</a>.
+            </video>
+            <a class="monthly-recap-link" href="assets/videos/mediashkola-2026-10-recap.mp4">Открыть видео отдельно ↗</a>
+          </div>
+        </article>
+        <article class="monthly-recap" aria-labelledby="recap-november-title">
+          <header class="monthly-recap-heading">
+            <span class="monthly-recap-number" aria-hidden="true">03</span>
+            <h3 id="recap-november-title">Итог ноября <span>2026</span></h3>
+          </header>
+          <div class="monthly-recap-pending"><span aria-hidden="true">✳</span><p>В творческой разработке</p></div>
+        </article>
+        <article class="monthly-recap" aria-labelledby="recap-december-title">
+          <header class="monthly-recap-heading">
+            <span class="monthly-recap-number" aria-hidden="true">04</span>
+            <h3 id="recap-december-title">Итог декабря <span>2026</span></h3>
+          </header>
+          <div class="monthly-recap-pending"><span aria-hidden="true">✳</span><p>В творческой разработке</p></div>
+        </article>
+      </div>
     </section>
 
     <!-- Курсы и «что даём» — из контент-дока Кати (САЙТ МЕДИАШКОЛЫ 2026-2027).
@@ -922,9 +972,10 @@ window.CAL = {
  "note": "месяц финала = воскресенье-событие; 26.12.2026 — суббота (финал сезона) Синхронизировано с window.CAL из index.html 24.08.2026 (страница рендерит инлайн; этот файл — его зеркало)."
 };
 </script>
-<script src="assets/site.js?v=20261003-autoplay1"></script>
+<script src="assets/site.js?v=20261101-calendar1"></script>
 <dialog id="photo-dialog" class="photo-dialog" aria-label="Просмотр фотографий"><div class="photo-viewer"><button class="photo-close" aria-label="Закрыть фотографию">×</button><img id="photo-full" alt=""><div class="photo-controls"><button id="photo-prev" aria-label="Предыдущая фотография">←</button><span id="photo-count" aria-live="polite"></span><button id="photo-next" aria-label="Следующая фотография">→</button></div></div></dialog>
 <script src="assets/motion-loops.js?v=20261003-autoplay1"></script>
 <script src="assets/gallery-previews.js?v=20261003-autoplay1"></script>
+<script src="assets/viewport-video.js?v=20261102-1"></script>
 </body>
 </html>
